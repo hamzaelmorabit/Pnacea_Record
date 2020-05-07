@@ -32,6 +32,14 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
+// firebase.auth().onAuthStateChanged((user) => {
+//   if(user){
+//     this.setState({ loggedIn: true})
+//   } else {
+//     this.setState({loggedIn: false})
+//   }
+// })
+
 
 const stack_home = createStackNavigator({
 
@@ -44,13 +52,7 @@ const stack_home = createStackNavigator({
 
 
   },
-  navig_account:
-  {
-    screen: Account,
-    navigationOptions: {
-      title: '',
-    },
-  },
+  
   navig_maps:
   {
     screen: Maps,
@@ -59,6 +61,14 @@ const stack_home = createStackNavigator({
       // header: null,
     }
   },
+  navig_account:
+  {
+    screen: Account,
+    navigationOptions: {
+      title: '',
+    },
+  },
+
   navig_searsh: {
     screen: Searsh,
     navigationOptions: {

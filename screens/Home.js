@@ -10,12 +10,16 @@ import Tab_bar from './component/Tab_bar'
 import DataBaseComponent from './DataBase/DataBaseComponent'
 // import {Icon} from 'react-native-vector-icons/Ionicons';
 export default class Home extends Component {
-
-   state = {
+constructor() {
+   super();
+   this.state = {
       email: "",
       photoUrl: "",
 
    };
+}
+
+   
    signOutUser = () => {
       firebase.auth().signOut()
    }
@@ -26,10 +30,17 @@ export default class Home extends Component {
    }
 
    componentDidMount = () => {
-      const { email, photoUrl } = firebase.auth().currentUser;
+      // console.log(firebase.auth() + "firebase.auth().currentUser.email")
       
-      this.setState({ email });
-      console.log(firebase.auth().currentUser)
+      console.log('******')
+      var user = firebase.auth().currentUser;
+      if (user != null) {
+         const { email } = firebase.auth().currentUser;
+
+         this.setState({ email });}
+      
+
+      // console.log(firebase.auth().currentUser)
       // this.props.navigation.navigate("my_account")
 
    }
@@ -39,32 +50,29 @@ export default class Home extends Component {
 
    render() {
 
-    
+
       // const { navigate } = this.props.navigation;
       // LayoutAnimation.easeInEaseOut();
       return (
-         <View  style={styles.container1}>
-         {/* <DataBasecomponent
+         <View style={styles.container1}>
+            {/* <DataBasecomponent
                data={["get_user_info", this.state.email]} navigation={this.props.navigation}
             /> */}
             {/* <DataBaseComponent
                data={["get_user_info", this.state.email]} navigation={this.props.navigation}
             /> */}
-           <Text>{this.state.email}</Text>
-                 <TouchableOpacity 
-                      
-                        onPress={() => {
-                          
-                           this.signOutUser()
-                        }} >
-                        <Text>{this.state.email}</Text>
-                         
-                  </TouchableOpacity>
-            <Tab_bar name="home"  current_user={this.state.email}
-             line_width={-140} 
+            <Text>{this.state.email}</Text>
+            <TouchableOpacity onPress={() => {
+               this.signOutUser()
+            }} >
+               <Text>{this.state.email}</Text>
+
+            </TouchableOpacity>
+            <Tab_bar name="home" current_user={this.state.email}
+               line_width={-140}
                navigation={this.props.navigation}
 
-             />
+            />
          </View>
       );
    }

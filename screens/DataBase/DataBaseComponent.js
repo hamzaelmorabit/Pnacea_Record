@@ -43,9 +43,14 @@ export default class DataBasecomponent extends Component {
 
     componentDidMount = () => {
 
-        console.log('componentDidMount DataBase  hhhhh')
+        console.log('im into componentDidMount DataBase')
         // console.log(typeof (this.props.data) + "mmmmm")
-        if ("string" != typeof (this.props.data)) { this.getDataOfUSer(); } else {
+        console.log(typeof (this.props.data) + " typeOf data")
+        if ("undefined" == typeof (this.props.data)) return;
+        else if ("string" == typeof (this.props.data)) {
+            console.log('call function getDataOfUSer')
+            this.getDataOfUSer();
+        } else {
             if (this.props.data[0] == "insert") {
                 console.log('insert')
                 this.addUserInDataBase()
@@ -55,10 +60,10 @@ export default class DataBasecomponent extends Component {
                 //kan pass lih gmail bash ysepprimi lya l user selon email et password
                 this.deletUserInDataBase(this.props.data[1], this.props.data[2])
             } else {
-                console.log("else data base ! " + this.props.data
-                )
-                // global.errorReset = "ooo";
-                this.getDataOfUSer()
+                // console.log("else data base ! " + this.props.data
+                // )
+                // // global.errorReset = "ooo";
+                // this.getDataOfUSer()
             }
         }
 

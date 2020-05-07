@@ -13,6 +13,10 @@ import DataBaseComponent from '../DataBase/DataBaseComponent'
 // import {Icon} from 'react-native-vector-icons/Ionicons';
 import { NavigationEvents } from 'react-navigation';
 export default class Account extends Component {
+   constructor() {
+      super();
+      
+   }
    state = {
       email: "",
       photoUrl: "",
@@ -20,14 +24,14 @@ export default class Account extends Component {
    };
 
    componentDidMount = () => {
-      const { email, photoUrl } = firebase.auth().currentUser;
+      // const { email, photoUrl } = firebase.auth().currentUser;
       // console.log(firebase.auth().currentUser)
       // console.log(email_e + "email_e");
       //  this.state.email = email_e 
       // console.log(this.state.email + "!!! this.state.email");
 
 
-      this.setState({ email });
+      // this.setState({ email });
       // this.props.navigation.navigate("my_account")
       // this.props.navigation.navigate("my_account")
 
@@ -51,10 +55,11 @@ export default class Account extends Component {
 
 
          <View style={styles.container1}>
-          <Text>{this.state.email}</Text> 
-          {/* <Text>{fname} FNAME</Text>  */}
+            <Text>{this.state.email}</Text>
+            {/* <Text>{fname} FNAME</Text>  */}
             <DataBaseComponent
-               data={fname} navigation={this.props.navigation}
+               data={fname}
+               navigation={this.props.navigation}
             />
             {/* <NavigationEvents
                onWillFocus={payload => console.log('will focus', payload)}
@@ -96,7 +101,7 @@ export default class Account extends Component {
                <View style={{ top: 60, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Last Name    </Text>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 40 }}>
-                     {lastName} 
+                     {lastName}
                   </Text>
                </View>
                <View style={{ top: 90, flexDirection: 'row' }}>
@@ -105,7 +110,7 @@ export default class Account extends Component {
                </View>
                <View style={{ top: 120, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Birthday  </Text>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 65 }}>Novomber 7, 1997 </Text>
+                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 65 }}>January 1, {age} </Text>
                </View>
                <View style={{ top: 150, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Gendre  </Text>
@@ -149,7 +154,9 @@ export default class Account extends Component {
             </View>
 
             <View style={{ bottom: 195 }}>
-               <Tab_bar navigation={this.props.navigation} line_width={145} name="account" />
+               <Tab_bar
+
+                  navigation={this.props.navigation} line_width={145} name="account" />
             </View>
 
          </View>

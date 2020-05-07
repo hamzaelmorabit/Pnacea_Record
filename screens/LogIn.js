@@ -267,7 +267,7 @@ export default class LogIn extends Component {
                   colors={['#FF4360', '#FF647C']}
                   style={styles.gradient}>
 
-                  <Text style={styles.buttonText1}> Sign in with Gmail </Text>
+                  <Text style={styles.buttonText1}> SSign in with Gmail </Text>
                   <Image
                      source={require('../images/gmailIcon1.png')}
                      style={styles.ImageIconStyle}

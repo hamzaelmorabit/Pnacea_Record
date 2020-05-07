@@ -15,7 +15,7 @@ export default class Loading extends Component {
    componentDidMount() {
       firebase.auth().onAuthStateChanged(user => {
          // if (user) {
-         //    // console.log("!!!!!!!!")
+         // console.log(user.email +"$$$$$$$$$$$$$")
          //    //          // if the user has previously logged in
          //            this.props.navigation.navigate('stack_home')
          //           } else {
