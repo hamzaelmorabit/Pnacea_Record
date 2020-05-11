@@ -6,8 +6,8 @@ import * as firebase from 'firebase';
 export default class DataBasecomponent extends Component {
     // constructor(props) {
     //     super(props);
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         global.errorReset = "falsccce";
         global.MessagError = '';
         // this.forceUpdate();
@@ -41,24 +41,27 @@ export default class DataBasecomponent extends Component {
 
 
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
 
-        console.log('im into componentDidMount DataBase')
+        console.log('Im into componentDidMount DataBase')
         // console.log(typeof (this.props.data) + "mmmmm")
-        console.log(typeof (this.props.data) + " typeOf data")
-        if ("undefined" == typeof (this.props.data)) return;
-        else if ("string" == typeof (this.props.data)) {
-            console.log('call function getDataOfUSer')
-            this.getDataOfUSer();
-        } else {
+        // console.log(typeof (this.props.data) + " typeOf data")
+        // if ("undefined" == typeof (this.props.data)) return;
+        if (this.props.data[0] == "get_data") {
+            console.log(' getDataOfUSer')
+            try { await this.getDataOfUSer(); }
+            catch (error) { console.log('error getDataOfUSer') }
+        }
+        else {
             if (this.props.data[0] == "insert") {
-                console.log('insert')
+                console.log('i appel function INSERTED in DataBase!');
                 this.addUserInDataBase()
                 // console.log(this.props.data[1] + "!")
             } else if (this.props.data[0] == "delet") {
-                console.log('delet  ')
+                console.log('Deleted  DataBase !! ')
+                // if(this.props.data[0] == "The email addre")
                 //kan pass lih gmail bash ysepprimi lya l user selon email et password
-                this.deletUserInDataBase(this.props.data[1], this.props.data[2])
+                // this.deletUserInDataBase(this.props.data[1], this.props.data[2])
             } else {
                 // console.log("else data base ! " + this.props.data
                 // )
@@ -69,22 +72,22 @@ export default class DataBasecomponent extends Component {
 
     }
 
-    getDataOfUSer = () => {
-
+    getDataOfUSer = async () => {
+        // console.log( this.props.data + " : data ")
         // window.location.reload(false);
         // const {user_data_firstName} = this.state ; 
         //  console.log(this.props.data)
-        // this.setState({ data: 'kkkkkkkkk' })
-        firebase.database().ref('users').on('value', data => {
+        // this.setState({ data: 'kkkkkkkkk' }) 
+        await firebase.database().ref('users').on('value', data => {
             data.forEach((item) => {
-
-                if (item.val().email == this.props.data) {
-                    console.log(item.val().id + "ppp")
+                // console.log(this.props.data[1])
+                if (item.val().email == this.props.data[1]) {
+                    console.log(item.val().id + "The id  of element i found ")
                     // console.log(item.val().email+" : Emaildeleted ******************")
                     // var path = 'users/user_' + item.val().id
                     // firebase.database().ref(path).remove();
                     global.errorReset = item.val().lastName;
-                    console.log(item.val().password + "this.props.data[0]")
+                    console.log(item.val().firstName + "this.props.data[0]")
                     this.state.user_data_email = item.val().email
                     this.state.user_data_password = "item.val().password "
                     this.state.user_data_firstName = item.val().firstName
@@ -110,50 +113,64 @@ export default class DataBasecomponent extends Component {
                 id: this.state.user_data_id
             })
         })
-
-
-
     }
 
-    deletUserInDataBase = (email_delet, password_delet) => {
+    addUserInDataBase = () => {
+        // console.log('INSERTED !');
         firebase.database().ref('users').on('value', data => {
             data.forEach((item) => {
 
-                if (item.val().email == email_delet && item.val().password == password_delet) {
-                    // console.log(item.val().id + "ppp")
-                    // console.log(item.val().email+" : Emaildeleted ******************")
-                    var path = 'users/user_' + item.val().id
-                    firebase.database().ref(path).remove();
+                if (item.val().email == this.props.data[1]) {
+                    this.props.data[1] = "user in base doonee"
+                    return;
                 }
             })
         }
         )
+        if (this.props.data[1] != "user in base doonee") {
+            console.log("success insert ")
+            var id_ = parseInt(Math.random() * 100) +parseInt(Math.random() * 50)+ parseInt(Math.random() * 50),
+                path = "users/user_" + id_
+            setTimeout(() => {
+                firebase.database().ref(path).set({
+                    email: this.props.data[1],
+                    password: this.props.data[2],
+                    firstName: this.props.data[3],
+                    lastName: this.props.data[4],
+                    phoneNumber: this.props.data[5],
+                    age: this.props.data[6],
+                    gendre: this.props.data[7],
+                    bloodType: this.props.data[8],
+                    id: id_,
+                }
+                ).then(() => {
+
+                }).catch((error) => {
+                    console.log(error);
+                });
+
+            }, 2000);
+        } else {
+            console.log("error insert => user in dataBase ")
+        }
     }
 
 
-    addUserInDataBase = () => {
-        var id_ = parseInt(Math.random() * 100) + parseInt(Math.random() * 10),
-            path = "users/user_" + id_
-        setTimeout(() => {
-            firebase.database().ref(path).set({
-                email: this.props.data[1],
-                password: this.props.data[2],
-                firstName: this.props.data[3],
-                lastName: this.props.data[4],
-                phoneNumber: this.props.data[5],
-                age: this.props.data[6],
-                gendre: this.props.data[7],
-                bloodType: this.props.data[8],
-                id: id_,
-            }
-            ).then(() => {
-                console.log('INSERTED !');
-            }).catch((error) => {
-                console.log(error);
-            });
+    // deletUserInDataBase = (email_delet, password_delet) => {
+    //     firebase.database().ref('users').on('value', data => {
+    //         data.forEach((item) => {
 
-        }, 2000);
-    }
+    //             if (item.val().email == email_delet && item.val().password == password_delet) {
+    //                 // console.log(item.val().id + "ppp")
+    //                 console.log('Deleted  Success')
+    //                 // console.log(item.val().email+" : Emaildeleted ******************")
+    //                 var path = 'users/user_' + item.val().id
+    //                 firebase.database().ref(path).remove();
+    //             }
+    //         })
+    //     }
+    //     )
+    // }
 
     render() {
 

@@ -9,19 +9,24 @@ import { Ionicons, Feather, Icon, Entypo, MaterialIcons, FontAwesome, EvilIcons,
 
 export default class Tab_bar extends Component {
 
-   constructor(){
-      super();
-      global.current_user = "falsccce";
-   }
+   // constructor(){
+   //    super();
+   //    // global.current_user = "falsccce";
+   // }
    // state = {
-   //    global.current_user: "",
-    
-
+   //    email_user : "",
+   
    // };
    
    // componentDidMount = () => {
-   //    this.setState({ current_user:this.props.current_user})
+   //    const { navigation } = this.props;
+   //    const fname = navigation.getParam('current_user')
+   //    global.current_user  = fname
+   //    this.setState({current_user : fname}) 
+   //    console.log(  this.props.current_user + " why" )
    // }
+
+   
    render() {
       // console.log(this.props.name)
       // const { navigation } = this.props;
@@ -52,7 +57,7 @@ export default class Tab_bar extends Component {
                         color={(this.props.name == 'home') ? '#8461c9' : '#000000'}
                         size={35}
                         onPress={() => {
-                           this.setState({ position_gradient: this.props.line_width })
+                           // this.setState({ position_gradient: this.props.line_width })
                            this.props.navigation.navigate("Home")
                         }} />
                   </TouchableOpacity>
@@ -121,7 +126,12 @@ export default class Tab_bar extends Component {
                         color={this.props.name == 'account' ? '#8461c9' : '#3F3356'}
                         size={35}
                         onPress={() => {
-                           this.props.navigation.navigate("navig_account",{current_user : this.props.current_user})
+                           // this.setState({ email_user: this.props.line_width })
+                           this.props.navigation.navigate("navig_account"
+                           //  ,
+                           //   {current_user : this.props.current_user }
+                           
+                           )
                         }} />
                   </TouchableOpacity>
                </View>

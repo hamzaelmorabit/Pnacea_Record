@@ -85,6 +85,33 @@ const stack_home = createStackNavigator({
   }
 })
 
+const log_in = createStackNavigator({
+  LogIn: {
+    screen: LogIn,
+    navigationOptions: {
+      title: '',
+      headerStyle: {
+        backgroundColor: '#fff',
+        elevation: 0
+      },
+      headerTitleStyle: {
+      },
+    },
+  },
+
+})
+// const SignUp_ = createStackNavigator({
+// SignUp: {
+//   screen: SignUp,
+//   navigationOptions: {
+//     title: 'Sign up',
+
+//     headerTitleStyle: {
+//       // fontWeight: 'bold',
+//       left: 70,
+//     },
+//   },
+// },})
 // stack concerne log in fin anb9a n naviguer bteween screen
 const stack_log_in = createStackNavigator({
 
@@ -136,8 +163,18 @@ const stack_log_in = createStackNavigator({
       },
     },
   },
-
-
+  LogIn: {
+    screen: LogIn,
+    navigationOptions: {
+      title: '',
+      headerStyle: {
+        backgroundColor: '#fff',
+        elevation: 0
+      },
+      headerTitleStyle: {
+      },
+    },
+  },
 })
 
 
@@ -145,12 +182,18 @@ export default createAppContainer(
   createSwitchNavigator({
 
     Loading: Loading,
+    log_in:log_in,
     stack_log_in: stack_log_in,
+    //  SignUp_:SignUp_,
+ 
+   
+    // LogIn : LogIn ,
+    //Home : Home ,
     stack_home: stack_home,
 
   },
     {
-      initialRouteName: "Loading"
+    initialRouteName: "Loading"
     }
   )
 )

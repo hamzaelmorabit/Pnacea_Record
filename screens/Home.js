@@ -10,17 +10,18 @@ import Tab_bar from './component/Tab_bar'
 import DataBaseComponent from './DataBase/DataBaseComponent'
 // import {Icon} from 'react-native-vector-icons/Ionicons';
 export default class Home extends Component {
-constructor() {
-   super();
-   this.state = {
-      email: "",
-      photoUrl: "",
+   constructor() {
+      super();
+      this.state = {
+         email: "",
+         photoUrl: "",
 
-   };
-}
+      };
+   }
 
-   
+
    signOutUser = () => {
+      this.props.navigation.navigate("stack_log_in")
       firebase.auth().signOut()
    }
 
@@ -30,20 +31,47 @@ constructor() {
    }
 
    componentDidMount = () => {
-      // console.log(firebase.auth() + "firebase.auth().currentUser.email")
-      
-      console.log('******')
-      var user = firebase.auth().currentUser;
-      if (user != null) {
-         const { email } = firebase.auth().currentUser;
+      // const { navigation } = this.props;
+      // const fname = navigation.getParam('user_')
+      // // console.log(firebase.auth() + "firebase.auth().currentUser.email")
 
-         this.setState({ email });}
-      
+      // console.log(fname +" $$$$ ")
+      var user = firebase.auth().currentUser;
+      if (user != null) {  
+         // const { email } = firebase.auth().currentser;
+
+         this.setState({ email: user.email });
+      }
+      else {
+         // this.setState({ email :fname})
+      }
+
 
       // console.log(firebase.auth().currentUser)
       // this.props.navigation.navigate("my_account")
 
    }
+
+   // componentWillUnmount = () => {
+   //    // const { navigation } = this.props;
+   //    // const fname = navigation.getParam('user_')
+   //    // // console.log(firebase.auth() + "firebase.auth().currentUser.email")
+
+   //    // console.log(fname +" $$$$ ")
+   //    var user = firebase.auth().currentUser;
+   //    if (user != null) {
+   //       const { email } = firebase.auth().currentUser;
+
+   //       this.setState({ email });}
+   //       else{
+   //          // this.setState({ email :fname})
+   //       }
+
+
+   //    // console.log(firebase.auth().currentUser)
+   //    // this.props.navigation.navigate("my_account")
+
+   // }
 
 
 
@@ -51,8 +79,9 @@ constructor() {
    render() {
 
 
-      // const { navigate } = this.props.navigation;
+      const { email } = this.state;
       // LayoutAnimation.easeInEaseOut();
+      console.log(email)
       return (
          <View style={styles.container1}>
             {/* <DataBasecomponent
@@ -65,14 +94,18 @@ constructor() {
             <TouchableOpacity onPress={() => {
                this.signOutUser()
             }} >
-               <Text>{this.state.email}</Text>
+               <Text>{this.state.email}oooo</Text>
 
             </TouchableOpacity>
-            <Tab_bar name="home" current_user={this.state.email}
-               line_width={-140}
+            <View style={{top:-22}}>
+            <Tab_bar name="home"
+            current_user={email}
+         
+                line_width={-140}
                navigation={this.props.navigation}
 
             />
+            </View>
          </View>
       );
    }

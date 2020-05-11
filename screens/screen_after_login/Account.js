@@ -9,38 +9,41 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import Tab_bar from './../component/Tab_bar'
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
-import DataBaseComponent from '../DataBase/DataBaseComponent'
+import DataBasecomponent from '../DataBase/DataBaseComponent'
+// import DataBasecomponent from './DataBase/DataBaseComponent';
 // import {Icon} from 'react-native-vector-icons/Ionicons';
 import { NavigationEvents } from 'react-navigation';
 export default class Account extends Component {
-   constructor() {
-      super();
-      
+   constructor(props) {
+      super(props);
+
    }
    state = {
       email: "",
       photoUrl: "",
 
    };
-
+   compon = () => {  this.props.navigation.navigate("stack_log_in")}
    componentDidMount = () => {
-      // const { email, photoUrl } = firebase.auth().currentUser;
-      // console.log(firebase.auth().currentUser)
-      // console.log(email_e + "email_e");
-      //  this.state.email = email_e 
-      // console.log(this.state.email + "!!! this.state.email");
-
-
-      // this.setState({ email });
-      // this.props.navigation.navigate("my_account")
-      // this.props.navigation.navigate("my_account")
+      console.log("componentDidMount of Account")
+      var user = firebase.auth().currentUser;
+    
+      if (user != null) {
+         // const { email } = firebase.auth().currentUser;
+         
+         this.setState({ email: user.email });
+         console.log("this.state.email" + user.emai)
+      }else{
+         this.props.navigation.navigate("stack_log_in")
+      }
 
    }
 
    render() {
 
       const { navigation } = this.props;
-      const fname = navigation.getParam('current_user')
+      // const fname = navigation.getParam('current_user')
+      // console.log(fname + " fname:::::")
       const password = navigation.getParam('password')
       const firstName = navigation.getParam('firstName')
       const lastName = navigation.getParam('lastName')
@@ -48,19 +51,53 @@ export default class Account extends Component {
       const age = navigation.getParam('age')
       const gendre = navigation.getParam('gendre')
       const blood_type = navigation.getParam('blood_type')
+      const id = navigation.getParam('id')
       // console.log(this.state.email + "this.state.email");
       // console.log(this.state.email + " this.state.email");
       // let { email } = this.state;
+      const { email } = this.state
       return (
 
 
          <View style={styles.container1}>
-            <Text>{this.state.email}</Text>
-            {/* <Text>{fname} FNAME</Text>  */}
-            <DataBaseComponent
+            {(this.state.email == "") ? <Text onPress={()=>{this.compon()}}>{this.state.email} + "yehssh"</Text> : null}
+            <Text>{email} FNAME</Text> 
+
+            {/* {(fname != "") ? (<DataBaseComponent
                data={fname}
                navigation={this.props.navigation}
-            />
+            />) : <Text> {fname} + "fname != """</Text> } */}
+            {/* {(this.state.email == "") ? (<DataBasecomponent
+               data={email} />) : ((fname != "") ? (   
+                  <DataBasecomponent
+                     data={fname}
+                     // navigation={this.props.navigation}
+                  />
+
+
+               ) : <Text> {fname} + "fname != """</Text>)} */}
+
+               {/* {(true) ? (<DataBasecomponent data={["get_data", email]} />) : (null)} */}
+               {(this.state.email != "") ? (<DataBasecomponent  
+                navigation={this.props.navigation} data={["get_data", email]} />) : (
+                  
+                  <Text>not essxecuted</Text>
+               )}
+            {/* {(this.state.email == "") ? (
+               <DataBaseComponent
+                  data={email}
+                  navigation={this.props.navigation} />
+
+
+            ) : (fname != "") ? (
+               <DataBaseComponent
+                  data={fname}
+                  navigation={this.props.navigation}
+               /> 
+
+
+            ) : <Text> {fname} + "fname != """</Text>}*/}
+
             {/* <NavigationEvents
                onWillFocus={payload => console.log('will focus', payload)}
                onDidFocus={payload => console.log('did focus', payload)}
@@ -96,7 +133,10 @@ export default class Account extends Component {
             <View style={{ top: 90, }}>
                <View style={{ top: 30, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>First Name    </Text>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 40 }}>{firstName}</Text>
+                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 40 }}>
+                   {firstName} 
+                  
+                  </Text>
                </View>
                <View style={{ top: 60, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Last Name    </Text>
@@ -105,20 +145,28 @@ export default class Account extends Component {
                   </Text>
                </View>
                <View style={{ top: 90, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Phone  </Text>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 77 }}>{phoneNumber}</Text>
+                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Phone id </Text>
+                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 77 }}>
+                  {id}
+                  </Text>
                </View>
                <View style={{ top: 120, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Birthday  </Text>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 65 }}>January 1, {age} </Text>
+                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 65 }}>January 1,
+                   {age} 
+                   </Text>
                </View>
                <View style={{ top: 150, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Gendre  </Text>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 71 }}>{gendre} </Text>
+                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 71 }}>
+                  {gendre}
+                   </Text>
                </View>
                <View style={{ top: 180, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Blood Type </Text>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 50 }}>{blood_type} </Text>
+                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 50 }}>
+                  {blood_type} 
+                  </Text>
                </View>
             </View>
 

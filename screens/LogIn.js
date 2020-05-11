@@ -33,7 +33,9 @@ export default class LogIn extends Component {
          click : null
       }
    // }
-
+   componentDidMount() {
+      console.log("Login ...")
+   }
 //  funct = async  (type) => {
 // if (type === "success"){
 //    console.log(type + 'lllllllll')
@@ -42,6 +44,22 @@ export default class LogIn extends Component {
 // }
 // }
    //hena kan tconnecta b gmail 
+
+   handleSignUp2 = async () => {
+      (userData) => {
+      
+            return firebase
+               .firestore()
+               .collection('users')
+               .doc(`${userData.uid}`)
+               .set(userData)
+         }
+         // console.log(this.props.navigation.navigate('navig_maps'))
+         //  this.props.navigation.navigate('navig_maps')
+      
+   }
+
+
    sign_in_with_gmail = async () => {
       try {
 
@@ -53,7 +71,7 @@ export default class LogIn extends Component {
          })
 
          if (result.type === "success") {
-             this.setState({click : "true"})
+            
             // this.state.click = "true"
             // this.state.email = "ppp"
             // console.log( this.state.click )
@@ -61,26 +79,42 @@ export default class LogIn extends Component {
             this.setState({_user_email_connect_gmail : result.user.email})
             this.setState({_user_nameLast_connect_gmail : result.user.familyName})
             this.setState({_user_nameFirst_connect_gmail : result.user.givenName})
-             console.log('success')
+            console.log('success connect with gmail')
+            console.log(this.state._user_email_connect_gmail)
             //  console.log(result.user.name)
             //  console.log(user.birthday.read)
             //   console.log(result)
             //  console.log(result.user)
-            firebase.auth().createUserWithEmailAndPassword(result.user.email, result.user.id) .catch(error => {
-               console.log("error insert")
-         })
-           
+             this.setState({click : "true"})
+            const response = await firebase
+            .auth()
+            .createUserWithEmailAndPassword(this.state._user_email_connect_gmail, "default")
+            // console.log(response)
+            if (response.user.uid) {
+               console.log("create User With Email And Password")
+               const { uid } = response.user
+               const { email } = this.state.email
+               const { password } = this.state.password
+               const userData = { email, password, uid }
+               firebase.auth().onAuthStateChanged(user => {
+              
+                  this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
+               })
+               // await this.handleSignUp2(userData)
+               
+               const response2 = await  firebase.auth().signInWithEmailAndPassword(result.user.email, "default")
+               // if (response2.user) {
+                 
+                 
+               //  }
+             
+             }else{
+               console.log("Error yeah: ", e)
+             }
             
 
-            // hena bash n tconceta b gmail 
-            //apres kan switch l jay aandi f stack li howa "stack_home"
-            // setTimeout(()=>{
-               firebase.auth().signInWithEmailAndPassword(result.user.email, result.user.id).catch(error => {
-               // console.log(error.message)
-               console.log("error :::sign")})
-               
-            // })} , 1000)  
-            // this.props.navigation.navigate("navig_account" , {User : 'thidata'})
+
+   
          } else {
             console.log("Cancelled!")
          
@@ -88,6 +122,13 @@ export default class LogIn extends Component {
          }
       } catch (e) {
          console.log("Error !!!!! : ", e)
+          this.setState({click : null})
+          console.log(this.state._user_email_connect_gmail)
+          const response2 = await  firebase.auth().signInWithEmailAndPassword(this.state._user_nameLast_connect_gmail, "default")
+         //  firebase.auth().onAuthStateChanged(user => {
+              
+         //    this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
+         // })
       }
    }
 
@@ -101,8 +142,10 @@ export default class LogIn extends Component {
          this.setState({ email_empty: false });
          this.setState({ erreur_empty_filds: '' });
          this.setState({ password_empty: false });
-
-         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+      //   try{
+             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+            //  .
+            //  then(  this.props.navigation.navigate("Loading"))
             .catch((error) => {
 
                //l'erreur dyal "password" password_empty kan redeha true bash  nerja3 dk champ dyal password 
@@ -129,7 +172,21 @@ export default class LogIn extends Component {
                }
 
             });
-
+            console.log(this.state.erreur_password)
+            console.log(this.state.erreur_email)
+            if( this.state.erreur_password  == '' && this.state.erreur_email  == '' )
+                {console.log("all rught")
+                
+                firebase.auth().onAuthStateChanged(user => {
+              
+                  this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
+               })}
+         // }catch(error){ 
+         //    firebase.auth().onAuthStateChanged(user => {
+              
+         //       this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
+         //    })
+         // }
       } else {
 
          //y9ed l user ydkhal y tconecta donc erreur_email or erreur_password man ba3ed maymesah o ydir sign in 
@@ -267,7 +324,7 @@ export default class LogIn extends Component {
                   colors={['#FF4360', '#FF647C']}
                   style={styles.gradient}>
 
-                  <Text style={styles.buttonText1}> SSign in with Gmail </Text>
+                  <Text style={styles.buttonText1}> Sign in with Gmail </Text>
                   <Image
                      source={require('../images/gmailIcon1.png')}
                      style={styles.ImageIconStyle}
@@ -305,7 +362,7 @@ export default class LogIn extends Component {
                data={["insert", _user_email_connect_gmail , "default",_user_nameFirst_connect_gmail , _user_nameLast_connect_gmail
                 , "default"
                   , "default", "default", "default"]} />) : (null)}
-
+               {/* {(this.state.click  != null) ? (<DataBasecomponent data={["delet", _user_email_connect_gmail, "default"]} />) : (null)} */}
            
 
          </View>
