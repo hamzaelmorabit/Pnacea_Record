@@ -12,7 +12,10 @@ import DataBasecomponent from './DataBase/DataBaseComponent'
 export default class LogIn extends Component {
    // constructor() {
    //    super();
+   constructor(props) {
+      super(props);
 
+   }
       //hado les variables li anhtaj 
       state   =  {
     
@@ -26,11 +29,11 @@ export default class LogIn extends Component {
          erreur_empty_filds: '',//ila kan aandi les champs vide kandir hena l messag "please fill all mendatory fields" 
          //o kan affchih
 
-        _user_email_connect_gmail : '' ,
-        _user_nameFirst_connect_gmail : '' ,
-        _user_nameLast_connect_gmail : '' ,
+        _user_email_connect_gmail : null ,
+        _user_password_connect_gmail : '' ,
+      //   _user_nameLast_connect_gmail : '' ,
          // _insert_data:null ,
-         click : null
+         // click : null
       }
    // }
    componentDidMount() {
@@ -45,21 +48,26 @@ export default class LogIn extends Component {
 // }
    //hena kan tconnecta b gmail 
 
-   handleSignUp2 = async () => {
-      (userData) => {
+   // handleSignUp2 = async () => {
+   //    (userData) => {
       
-            return firebase
-               .firestore()
-               .collection('users')
-               .doc(`${userData.uid}`)
-               .set(userData)
-         }
-         // console.log(this.props.navigation.navigate('navig_maps'))
-         //  this.props.navigation.navigate('navig_maps')
+   //          return firebase
+   //             .firestore()
+   //             .collection('users')
+   //             .doc(`${userData.uid}`)
+   //             .set(userData)
+   //       }
+   //       // console.log(this.props.navigation.navigate('navig_maps'))
+   //       //  this.props.navigation.navigate('navig_maps')
       
+   // }
+
+    getPassWordData =  () => {
+      const { navigation } = this.props;
+
+      this.state._user_password_connect_gmail =   navigation.getParam('password')
+      console.log("_user_password_connect_gmail : "+this.state._user_password_connect_gmail)
    }
-
-
    sign_in_with_gmail = async () => {
       try {
 
@@ -71,49 +79,16 @@ export default class LogIn extends Component {
          })
 
          if (result.type === "success") {
-            
-            // this.state.click = "true"
-            // this.state.email = "ppp"
-            // console.log( this.state.click )
-            // kan cree wahed l user f firebase dyali  name: result.user.name,
+            getPassWordData()
             this.setState({_user_email_connect_gmail : result.user.email})
-            this.setState({_user_nameLast_connect_gmail : result.user.familyName})
-            this.setState({_user_nameFirst_connect_gmail : result.user.givenName})
             console.log('success connect with gmail')
-            console.log(this.state._user_email_connect_gmail)
-            //  console.log(result.user.name)
-            //  console.log(user.birthday.read)
-            //   console.log(result)
-            //  console.log(result.user)
-             this.setState({click : "true"})
-            const response = await firebase
-            .auth()
-            .createUserWithEmailAndPassword(this.state._user_email_connect_gmail, "default")
-            // console.log(response)
-            if (response.user.uid) {
-               console.log("create User With Email And Password")
-               const { uid } = response.user
-               const { email } = this.state.email
-               const { password } = this.state.password
-               const userData = { email, password, uid }
-               firebase.auth().onAuthStateChanged(user => {
-              
-                  this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
-               })
-               // await this.handleSignUp2(userData)
-               
-               const response2 = await  firebase.auth().signInWithEmailAndPassword(result.user.email, "default")
-               // if (response2.user) {
-                 
-                 
-               //  }
-             
-             }else{
-               console.log("Error yeah: ", e)
-             }
             
-
-
+            console.log(this.state._user_email_connect_gmail)
+      
+            
+            firebase.auth().signInWithEmailAndPassword(result.user.email,this.state._user_password_connect_gmail)
+            
+               
    
          } else {
             console.log("Cancelled!")
@@ -122,9 +97,11 @@ export default class LogIn extends Component {
          }
       } catch (e) {
          console.log("Error !!!!! : ", e)
-          this.setState({click : null})
-          console.log(this.state._user_email_connect_gmail)
-          const response2 = await  firebase.auth().signInWithEmailAndPassword(this.state._user_nameLast_connect_gmail, "default")
+         console.log(this.state._user_password_connect_gmail)
+         //  this.setState({click : null})
+         // //  console.log(this.state._user_email_connect_gmail)
+         // //  const response2 =
+         //   await  firebase.auth().signInWithEmailAndPassword(this.state._user_nameLast_connect_gmail, "default")
          //  firebase.auth().onAuthStateChanged(user => {
               
          //    this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
@@ -215,8 +192,13 @@ export default class LogIn extends Component {
    }
 
 
-
+// componentWillUpdate = ()=>{
+ 
+// }
    render() {
+
+     
+       
 
       //hena l'image dyal point d'itrrogation ! li atban ila kano aandi 1 men dak les champs empty
       //atban ila kan dak l erreur fih l messag (please fill all mendatory fields)
@@ -294,7 +276,7 @@ export default class LogIn extends Component {
                <TouchableOpacity onPress={() => {
                   this.props.navigation.navigate("ForgotPassword")
                }}>
-                  <Text style={{ left: 170 }}> Forgot the password ?</Text>
+                  <Text style={{ left: 170 }}>Forgot the password ?</Text>
                </TouchableOpacity>
 
             </View>
@@ -357,11 +339,14 @@ export default class LogIn extends Component {
                   {(this.state.click == null) ? (<DataBasecomponent
                data={["delet", this.state.email, "password"]} />) : (null)} */}
 
-               
-             {(this.state.click  != null) ? (<DataBasecomponent
+               {(this.state._user_email_connect_gmail != null) ? (<DataBasecomponent  
+                navigation={this.props.navigation} data={["get_data_for_gmail",
+                this.state._user_email_connect_gmail]} />):(null)
+               }
+             {/* {(this.state.click  != null) ? (<DataBasecomponent
                data={["insert", _user_email_connect_gmail , "default",_user_nameFirst_connect_gmail , _user_nameLast_connect_gmail
                 , "default"
-                  , "default", "default", "default"]} />) : (null)}
+                  , "default", "default", "default"]} />) : (null)} */}
                {/* {(this.state.click  != null) ? (<DataBasecomponent data={["delet", _user_email_connect_gmail, "default"]} />) : (null)} */}
            
 

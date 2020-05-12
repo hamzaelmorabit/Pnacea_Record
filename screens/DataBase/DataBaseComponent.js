@@ -62,14 +62,34 @@ export default class DataBasecomponent extends Component {
                 // if(this.props.data[0] == "The email addre")
                 //kan pass lih gmail bash ysepprimi lya l user selon email et password
                 // this.deletUserInDataBase(this.props.data[1], this.props.data[2])
-            } else {
-                // console.log("else data base ! " + this.props.data
-                // )
+            } else if(this.props.data[0] == "get_data_for_gmail"){
+                 console.log("get_data_for_gmail")
                 // // global.errorReset = "ooo";
-                // this.getDataOfUSer()
-            }
+                this.getDataforUSerGmail()
+            }else{}
         }
 
+    }
+
+    getDataforUSerGmail =   async () => {
+      
+         firebase.database().ref('users').on('value', data => {
+            data.forEach((item) => {
+                // console.log(this.props.data[1])
+                if (item.val().email == this.props.data[1]) {
+                    console.log("Existe ")
+                    this.state.user_data_password = item.val().password 
+                 
+                }
+            })
+            console.log(this.state.user_data_password +" : password")
+            // console.log( this.state.user_data_password + "$$$")
+            this.props.navigation.navigate("log_in", {
+                
+                password: this.state.user_data_password,
+               
+            })
+        })
     }
 
     getDataOfUSer = async () => {
@@ -121,13 +141,13 @@ export default class DataBasecomponent extends Component {
             data.forEach((item) => {
 
                 if (item.val().email == this.props.data[1]) {
-                    this.props.data[1] = "user in base doonee"
+                    this.props.data[1] = "user in base donne"
                     return;
                 }
             })
         }
         )
-        if (this.props.data[1] != "user in base doonee") {
+        if (this.props.data[1] != "user in base donne") {
             console.log("success insert ")
             var id_ = parseInt(Math.random() * 100) +parseInt(Math.random() * 50)+ parseInt(Math.random() * 50),
                 path = "users/user_" + id_
