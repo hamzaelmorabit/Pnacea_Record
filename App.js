@@ -1,18 +1,17 @@
 import * as firebase from 'firebase';
-import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import ForgotPassword from './screens/ForgotPassword';
 import Home from './screens/Home';
 import Loading from './screens/Loading';
 import LogIn from './screens/LogIn';
+import Account from './screens/screen_after_login/Account';
+import Maps from './screens/screen_after_login/Maps';
+import Notifications from './screens/screen_after_login/Notifications';
+import Searsh from './screens/screen_after_login/Searsh';
 import SendPassword from './screens/SendPassword';
 import SignUp from './screens/SignUp';
-import Account from './screens/screen_after_login/Account'
-import Searsh from './screens/screen_after_login/Searsh'
-import Notifications from './screens/screen_after_login/Notifications'
-import Maps from './screens/screen_after_login/Maps'
+import SignUpGmail from './screens/SignUpGmail';
 // import Ionicons from "@expo/vector-icons"
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -100,17 +99,7 @@ const log_in = createStackNavigator({
   },
 
 })
-// const SignUp_ = createStackNavigator({
-// SignUp: {
-//   screen: SignUp,
-//   navigationOptions: {
-//     title: 'Sign up',
 
-//     headerTitleStyle: {
-//       // fontWeight: 'bold',
-//       left: 70,
-//     },
-//   },
 // },})
 // stack concerne log in fin anb9a n naviguer bteween screen
 const stack_log_in = createStackNavigator({
@@ -151,9 +140,31 @@ const stack_log_in = createStackNavigator({
       },
     },
   },
-
+  LogIn: {
+    screen: LogIn,
+    navigationOptions: {
+      title: '',
+      headerStyle: {
+        backgroundColor: '#fff',
+        elevation: 0
+      },
+      headerTitleStyle: {
+      },
+    },
+  },
   SignUp: {
     screen: SignUp,
+    navigationOptions: {
+      title: 'Sign up',
+
+      headerTitleStyle: {
+        // fontWeight: 'bold',
+        left: 70,
+      },
+    },
+  },
+  SignUpGmail: {
+    screen: SignUpGmail,
     navigationOptions: {
       title: 'Sign up',
 

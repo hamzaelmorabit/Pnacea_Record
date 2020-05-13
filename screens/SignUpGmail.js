@@ -8,12 +8,19 @@ import DataBasecomponent from './DataBase/DataBaseComponent';
 import { YellowBox } from 'react-native';
 YellowBox.ignoreWarnings(['Setting a timer']);
 
-export default class SignUp extends Component {
+export default class SignUpGmail extends Component {
+
+
+   constructor(props) {
+      super(props);
+
+   }
+
 
    state = {
 
       name: "",
-      email: "",
+      email_user: "",
       password: "",
       confirm_password: "",
       first_name: "",
@@ -30,7 +37,7 @@ export default class SignUp extends Component {
       last_name_error: null,
       error_msg_age: null,
       error_msg_phone: null,
-
+      email_user_connect_gmail: '',
       is_click_confirm: null,//lakherin bayenin hadi dertha hyt anbghy n afficher les erreurs façon dyanmique
       //mnin l user aydkhal ila mkontsh dayer hadi ay t aficha l messag leta7tf l code  atban mzn 
 
@@ -39,66 +46,36 @@ export default class SignUp extends Component {
    }
 
 
-   componentWillUnmount = () => {
+   componentDidMount = () => {
+
+      //  const fname = navigation.getParam('current_user')
       // const { navigation } = this.props;
-      // const fname = navigation.getParam('user_')
-      console.log("componentWillUnmount Sing Up")
+      // this.setState({email_user_connect_gmail : m })
+      // console.log(this.state.email_user_connect_gmail +"gmail user name")
+      // console.log(m)
+      console.log("componentWillUnmount Sing Up gmail")
    }
 
 
    //bash katkon aandi formulair mzyana kan nji  l hena sign up
    handleSignUp = async () => {
       try {
-
+         const { navigation } = this.props;
+         const email_user_ = navigation.getParam('current_user')
+         console.log(email_user_ + "mmmm")
          // const response = 
-         await firebase
-            .auth()
-            .createUserWithEmailAndPassword(this.state.email, this.state.password)
 
+         await firebase.auth().signInWithEmailAndPassword(email_user_, "default")
+         firebase.auth().onAuthStateChanged(user => {
+            console.log("onAuthStateChanged ...")
+            this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
+         })
       } catch (error) {
-         console.log("erro Sign up  create User With Email And Password")
-         // this.props.navigation.navigate("stack_log_in")
-         //erreur li kayun hena howa dak l gmail f l formlaire ykon sehih mais hena
-         // la hyt y9edar ukon m staamlo onther user dkshu aalash momkin ykon aandi erreur
-         // so aykkheni ndir delet f  la base donné hyt deja dert insert o insert anaatyha null
-
-         this.props.navigation.navigate("SignUp")
-         // firebase.auth().signOut()
-         this.setState({ error_msg_email: error.message })
-         setTimeout(() => {
-            Alert.alert(
-               'Email error',
-               this.state.error_msg_email+"try again",
-               [
-                  {
-                     text: 'Cancel',
-                     onPress: () => { this.props.navigation.navigate("SignUp") },
-                     style: 'cancel',
-                  },
-                  {
-                     text: 'OK', onPress: () => {
-                        console.log("Alert  press Ok");
-                        // console.log(this.state._insert_data);
-                        this.props.navigation.navigate("SignUp")
-                     }
-                  },
-               ]
-            );
-
-         }, 4000);
+         console.log(error + "erro signInWithEmailAndPassword")
 
          // console.error(error)
       }
-      // console.log("this.state.error_msg_emai" + this.state.error_msg_emai)
-      if (this.state.error_msg_email == null) {
-    
-         console.log("Sign up good")
-        await  firebase.auth().signOut() //kaymshy nishan y t conceta ana kankharjo et bash kan kon f 
-        //account kanlgah deja user null o kan reja3 l login
-  
-      }else{
-         this.state._insert_data = null
-      }
+
 
    }
 
@@ -108,57 +85,8 @@ export default class SignUp extends Component {
 
       switch (args[1]) {
 
-         //chaque fois user kaydekhal kan afficher lih 
-         //si email vide  -> error_msg_email: "Please fill this field
-         //si tous ok  > error_msg_email: null
-         //si error f l format dyal l email  - > error_msg_email: 'The email address is badly formatted
-         //les autres same logic 'pwd age ..'
-         case 'email': {
-            if (args[0] == "") {
-               this.setState({ error_msg_email: "Please fill this field" })
-            } else {
-               if (new RegExp(/^[\w.+\-]+@gmail\.com$/).test(args[0])) {
-                  this.setState({ error_msg_email: null })
-                  this.setState({ email: args[0] })
-               } else {
-                  this.setState({ error_msg_email: 'The email address is badly formatted.' })
-               }
-            }
-            ; break;
-         }
 
-         case 'password': {
-            if (args[0].length < 6) {
-               if (args[0] == "") this.setState({ error_msg_pwd: "Please fill this field" })
 
-               else { this.setState({ error_msg_pwd: 'The password must be 6 characters or more' }) }
-            } else {
-               this.setState({ error_msg_pwd: null })
-               this.setState({ password: args[0] })
-               if (args[0] == this.state.confirm_password) {
-                  this.setState({ error_msg_confim_pwd: null })
-               } else {
-                  if (this.state.confirm_password != "")
-                     this.setState({ error_msg_confim_pwd: 'The confirm password does not match' })
-               }
-            }
-            ; break;
-         }
-
-         case 'confirm': {
-            if (args[0] == '') {
-               this.setState({ error_msg_confim_pwd: "Please fill this field" })
-               // console.log(this.state.error_msg_confim_pwd);
-            } else {
-               if (args[0] != this.state.password) {
-                  this.setState({ error_msg_confim_pwd: 'The confirm password does not match' })
-
-               } else {
-                  this.setState({ error_msg_confim_pwd: null })
-                  this.setState({ confirm_password: args[0] })
-               }
-            }; break;
-         }
 
          case 'first_name': {
 
@@ -233,10 +161,8 @@ export default class SignUp extends Component {
       } = this.state;
       this.setState({ is_click_confirm: true })
 
-      if (email == "") this.state.error_msg_email = 'Please fill this field';
-      // this.setState({error_msg_email: 'Please fill this field'}) } 
-      if (password == "") this.state.error_msg_pwd = 'Please fill this field'
-      if (confirm_password == "") this.state.error_msg_confim_pwd = 'Please fill this field'
+
+
       if (first_name == "") this.state.first_name_error = 'Please fill this field'
       if (last_name == "") this.state.last_name_error = 'Please fill this field'
       if (age == "") this.state.error_msg_age = 'Please fill this field'
@@ -244,19 +170,17 @@ export default class SignUp extends Component {
 
       // console.log(this.state.error_msg_email)
 
-      if (this.state.error_msg_email == null
-         && this.state.error_msg_pwd == null) {
+      if (true) {
          this.state._insert_data = "true"
          // this.state._delet_data = null
 
-         await this.handleSignUp()
+         // await this.handleSignUp()
+         setTimeout(() => { this.handleSignUp() }, 2000)
       }
 
       //tous est valider  (error_msg_email, ... ) rest null
-      if (this.state.error_msg_email == null
-         && this.state.error_msg_confim_pwd == null
-         && this.state.error_msg_pwd == null
-         && this.state.first_name_error == null && this.state.last_name_error == null && this.state.error_msg_age == null && this.state.error_msg_phone == null
+      if (
+         this.state.first_name_error == null && this.state.last_name_error == null && this.state.error_msg_age == null && this.state.error_msg_phone == null
       ) {
          /*   // console.log("email :" + email)
            // console.log("password :" + password)
@@ -291,6 +215,8 @@ export default class SignUp extends Component {
 
 
    render() {
+      const { navigation } = this.props;
+      const email_user_ = navigation.getParam('current_user')
 
       const {
          // _delet_data,
@@ -302,68 +228,8 @@ export default class SignUp extends Component {
       return (
          <View style={styles.container}>
             <Text style={styles.greeting}></Text>
-
+            <Text>{email_user_}</Text>
             <ScrollView contentContainerStyle={styles.contentContainer}>
-
-               {/* // email */}
-               {/* l methde bash khedmat hena  b7al lakhrin same logic
-                  ila kan aandi error null o deja clikit aala confirm anghyr style o n afficher
-                   textError 'error_msg_email'
-                  this.handleChangeText(email, 'email') bash yykon aandi dkshy dynamiq  
-                  dert email hyt f dak l methode selon type kandir changement*/}
-               <View style={{ marginTop: 10 }}>
-                  <Text style={styles.etoilText}>*</Text>
-                  <TextInput style={error_msg_email != null && is_click_confirm ? styles.inputErrorStyle : styles.input}
-                     autoCapitalize="none"
-                     placeholder="email"
-                     onChangeText={email => {
-                        this.setState({ email })
-                        this.handleChangeText(email, 'email')
-                     }}
-                     keyboardType="email-address"
-                     value={email}
-                  ></TextInput>
-
-                  {/* {this.state.error_msg_email != null && this.state.is_click_confirm ? (<Text style={styles.errorEmail}>{this.state.error_msg_email}</Text>) : (null)} */}
-               </View>
-               {error_msg_email != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{error_msg_email}</Text>) : (null)}
-
-
-               {/* // password */}
-               <View style={{ marginTop: 10 }}>
-                  <Text style={styles.etoilText}>*</Text>
-                  <TextInput style={error_msg_pwd != null && is_click_confirm ? styles.inputErrorStyle : styles.input} secureTextEntry
-                     autoCapitalize="none"
-                     placeholder="password"
-                     onChangeText={password => {
-                        this.setState({ password })
-                        this.handleChangeText(password, 'password')
-                     }}
-
-                     value={password}
-                  ></TextInput>
-               </View>
-               {error_msg_pwd != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{error_msg_pwd}</Text>) : (null)}
-
-
-
-               {/* // Cofirm password */}
-               <View style={{ marginTop: 10 }}>
-                  <Text style={styles.etoilText}>*</Text>
-                  <TextInput style={error_msg_confim_pwd != null && is_click_confirm ? styles.inputErrorStyle : styles.input}
-                     secureTextEntry
-                     autoCapitalize="none"
-                     placeholder="confirm password"
-                     onChangeText={confirm_pwd_val => {
-                        this.setState({ confirm_password: confirm_pwd_val })
-                        this.handleChangeText(confirm_pwd_val, 'confirm')
-                     }}
-                     value={confirm_password}
-                  ></TextInput>
-               </View>
-               {error_msg_confim_pwd != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{error_msg_confim_pwd}</Text>) : (null)}
-
-
 
                {/* // First Name */}
                <View style={{ marginTop: 10 }}>
@@ -405,7 +271,7 @@ export default class SignUp extends Component {
                   <TextInput
                      style={error_msg_phone != null && is_click_confirm ? styles.inputErrorStyle : styles.input}
                      keyboardType="numeric"
-                     placeholder="Phone number"
+                     placeholder="phone numbre"
                      onChangeText={(phone_number) => {
                         this.setState({ phone_number })
                         this.handleChangeText(phone_number, 'phone')
@@ -473,17 +339,17 @@ export default class SignUp extends Component {
 
                   <Picker
                      selectedValue={this.state.selectedValue}
-                     style={{ height: 50, marginRight: 120, width: 95 }}
+                     style={{ height: 50, marginRight: 120, width: 85 }}
                      onValueChange={(itemValue) => { this.setState({ selectedValue: itemValue }) }}
                   >
                      <Picker.Item label="A+" value="A+" />
                      <Picker.Item label="B+" value="B+" />
                      <Picker.Item label="O+" value="O+" />
-                     <Picker.Item label="AB+" value="AB+" />
+                     <Picker.Item label="AB+" value="B+" />
                      <Picker.Item label="A-" value="A-" />
                      <Picker.Item label="B-" value="B-" />
                      <Picker.Item label="O-" value="O-" />
-                     <Picker.Item label="AB-" value="AB-" />
+                     <Picker.Item label="AB-" value="B-" />
                   </Picker>
                </View>
 
@@ -514,7 +380,7 @@ export default class SignUp extends Component {
             li hya tableau o kandir f lawl dyaleha type wash l insert ola delet bash nlshy l component
             dyali n tchecki type bash naarf wash an inser ola an delet */}
             {(_insert_data != null) ? (<DataBasecomponent
-               data={["insert", email, password, first_name, last_name, phone_number
+               data={["insert", email_user_, password, "first_name", last_name, phone_number
                   , age, checked, selectedValue]} />) : (null)}
 
             {/* {si l user deja kan kan supprimih men l base donn o kan passi ghyr gmail o howa

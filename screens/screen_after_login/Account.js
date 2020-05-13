@@ -34,7 +34,7 @@ export default class Account extends Component {
          this.setState({ email: user.email });
          console.log("this.state.email" + user.emai)
       }else{
-         this.props.navigation.navigate("stack_log_in")
+        this.props.navigation.navigate("stack_log_in")
       }
 
    }

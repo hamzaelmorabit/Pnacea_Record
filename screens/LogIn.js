@@ -31,6 +31,7 @@ export default class LogIn extends Component {
 
         _user_email_connect_gmail : null ,
         _user_password_connect_gmail : '' ,
+        error_msg_email:''
       //   _user_nameLast_connect_gmail : '' ,
          // _insert_data:null ,
          // click : null
@@ -63,11 +64,14 @@ export default class LogIn extends Component {
    // }
 
     getPassWordData =  () => {
-      const { navigation } = this.props;
+      // const { navigation } = this.props;
 
-      this.state._user_password_connect_gmail =   navigation.getParam('password')
-      console.log("_user_password_connect_gmail : "+this.state._user_password_connect_gmail)
+      // this.state._user_password_connect_gmail =   navigation.getParam('password')
+      // console.log("_user_password_connect_gmail : "+this.state._user_password_connect_gmail)
    }
+
+
+
    sign_in_with_gmail = async () => {
       try {
 
@@ -79,33 +83,53 @@ export default class LogIn extends Component {
          })
 
          if (result.type === "success") {
-            getPassWordData()
+            // getPassWordData()
+            this.setState({ error_msg_email: '' })
             this.setState({_user_email_connect_gmail : result.user.email})
             console.log('success connect with gmail')
             
-            console.log(this.state._user_email_connect_gmail)
+            console.log(this.state.error_msg_email + "$$$$")
       
             
-            firebase.auth().signInWithEmailAndPassword(result.user.email,this.state._user_password_connect_gmail)
-            
+            // firebase.auth().signInWithEmailAndPassword(result.user.email,this.state._user_password_connect_gmail)
+            await firebase
+            .auth()
+            .createUserWithEmailAndPassword(this.state._user_email_connect_gmail,"default").catch((error)=>{
+               this.setState({ error_msg_email: error.message })
+               console.log("Error createUserWithEmailAndPassword!")
+            });
                
    
          } else {
             console.log("Cancelled!")
-         
+            this.setState({ error_msg_email: "Cancelled" })
             // console.log(this.state._insert_data)
          }
-      } catch (e) {
-         console.log("Error !!!!! : ", e)
-         console.log(this.state._user_password_connect_gmail)
-         //  this.setState({click : null})
-         // //  console.log(this.state._user_email_connect_gmail)
-         // //  const response2 =
-         //   await  firebase.auth().signInWithEmailAndPassword(this.state._user_nameLast_connect_gmail, "default")
-         //  firebase.auth().onAuthStateChanged(user => {
-              
-         //    this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
-         // })
+      } catch (error) {
+         console.log("Error !!!!! : ", error)
+         this.setState({ error_msg_email: error.message })
+         // console.log(this.state.error_msg_email+"error_msg_email ")
+    
+      }
+      
+
+      if (this.state.error_msg_email == '') {
+         console.log("this.state.erreur_emaild" + this.state.error_msg_email)
+         console.log("Sign up good")
+         this.props.navigation.navigate("SignUpGmail", {current_user : this.state._user_email_connect_gmail })
+         
+      }else{
+         console.log(this.state.error_msg_email+"error_msg_email ")
+         if( this.state.error_msg_email == "The email address is already in use by another account."){
+            Alert.alert(
+               '\'Google Account\' error',
+               "The email address is already in use by another account. Try again",
+               [ { text: 'Cancel', style: 'cancel', },
+                  { text: 'OK', },]
+            );
+         }
+       
+        
       }
    }
 
@@ -274,7 +298,9 @@ export default class LogIn extends Component {
 
                {/* ila l user werak aala forgot pws kan orientih l screen dyal "ForgotPassword" */}
                <TouchableOpacity onPress={() => {
-                  this.props.navigation.navigate("ForgotPassword")
+                  
+                  
+                   this.props.navigation.navigate("ForgotPassword")
                }}>
                   <Text style={{ left: 170 }}>Forgot the password ?</Text>
                </TouchableOpacity>
@@ -339,10 +365,10 @@ export default class LogIn extends Component {
                   {(this.state.click == null) ? (<DataBasecomponent
                data={["delet", this.state.email, "password"]} />) : (null)} */}
 
-               {(this.state._user_email_connect_gmail != null) ? (<DataBasecomponent  
+               {/* {(this.state._user_email_connect_gmail != null) ? (<DataBasecomponent  
                 navigation={this.props.navigation} data={["get_data_for_gmail",
                 this.state._user_email_connect_gmail]} />):(null)
-               }
+               } */}
              {/* {(this.state.click  != null) ? (<DataBasecomponent
                data={["insert", _user_email_connect_gmail , "default",_user_nameFirst_connect_gmail , _user_nameLast_connect_gmail
                 , "default"
