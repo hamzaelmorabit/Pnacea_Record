@@ -8,6 +8,7 @@ import LogIn from './screens/LogIn';
 import Account from './screens/screen_after_login/Account';
 import Maps from './screens/screen_after_login/Maps';
 import Notifications from './screens/screen_after_login/Notifications';
+import sendResetGmail from './screens/screen_after_login/sendResetGmail';
 import Searsh from './screens/screen_after_login/Searsh';
 import SendPassword from './screens/SendPassword';
 import SignUp from './screens/SignUp';
@@ -81,7 +82,14 @@ const stack_home = createStackNavigator({
       title: '',
       // header: null,
     }
-  }
+  },
+  navig_sendResetGmail: {
+    screen: sendResetGmail,
+    navigationOptions: {
+      title: '',
+      // header: null,
+    }
+  },
 })
 
 const log_in = createStackNavigator({

@@ -19,10 +19,7 @@ export default class SignUpGmail extends Component {
 
    state = {
 
-      name: "",
       email_user: "",
-      password: "",
-      confirm_password: "",
       first_name: "",
       last_name: "",
       age: "",
@@ -30,9 +27,6 @@ export default class SignUpGmail extends Component {
       checked: 'male',
       selectedValue: 'A+',
 
-      error_msg_email: null,
-      error_msg_pwd: null,
-      error_msg_confim_pwd: null,
       first_name_error: null,
       last_name_error: null,
       error_msg_age: null,
@@ -42,18 +36,15 @@ export default class SignUpGmail extends Component {
       //mnin l user aydkhal ila mkontsh dayer hadi ay t aficha l messag leta7tf l code  atban mzn 
 
       _insert_data: null,//aala hesab l base donne
-      // _delet_data: null,//aala 
    }
 
 
    componentDidMount = () => {
-
-      //  const fname = navigation.getParam('current_user')
-      // const { navigation } = this.props;
-      // this.setState({email_user_connect_gmail : m })
-      // console.log(this.state.email_user_connect_gmail +"gmail user name")
-      // console.log(m)
       console.log("componentWillUnmount Sing Up gmail")
+      const { navigation } = this.props;
+
+      console.log("gmail user name" + navigation.getParam('current_user'))
+
    }
 
 
@@ -62,18 +53,16 @@ export default class SignUpGmail extends Component {
       try {
          const { navigation } = this.props;
          const email_user_ = navigation.getParam('current_user')
-         console.log(email_user_ + "mmmm")
-         // const response = 
+         console.log("email_user_ ->" + email_user_)
 
          await firebase.auth().signInWithEmailAndPassword(email_user_, "default")
          firebase.auth().onAuthStateChanged(user => {
             console.log("onAuthStateChanged ...")
             this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
          })
-      } catch (error) {
-         console.log(error + "erro signInWithEmailAndPassword")
 
-         // console.error(error)
+      } catch (error) {
+         console.log("error signInWithEmailAndPassword !!!!!!!!" + error)
       }
 
 
@@ -84,9 +73,6 @@ export default class SignUpGmail extends Component {
 
 
       switch (args[1]) {
-
-
-
 
          case 'first_name': {
 
@@ -157,49 +143,33 @@ export default class SignUpGmail extends Component {
 
    handl_confirm = async () => {
 
-      let { age, first_name, last_name, email, password, phone_number, confirm_password
+      let { age, first_name, last_name, phone_number
       } = this.state;
       this.setState({ is_click_confirm: true })
-
-
 
       if (first_name == "") this.state.first_name_error = 'Please fill this field'
       if (last_name == "") this.state.last_name_error = 'Please fill this field'
       if (age == "") this.state.error_msg_age = 'Please fill this field'
       if (phone_number == "") this.state.error_msg_phone = 'Please fill this field'
 
-      // console.log(this.state.error_msg_email)
-
-      if (true) {
-         this.state._insert_data = "true"
-         // this.state._delet_data = null
-
-         // await this.handleSignUp()
-         setTimeout(() => { this.handleSignUp() }, 2000)
-      }
-
-      //tous est valider  (error_msg_email, ... ) rest null
       if (
-         this.state.first_name_error == null && this.state.last_name_error == null && this.state.error_msg_age == null && this.state.error_msg_phone == null
+         this.state.first_name_error == null && this.state.last_name_error == null
+         && this.state.error_msg_age == null && this.state.error_msg_phone == null
       ) {
          /*   // console.log("email :" + email)
-           // console.log("password :" + password)
+           // console.log("password :" + password) 
            // console.log("confirm_password :" + confirm_password)
-           // console.log("first_name :" + first_name)
-           // console.log("last_name :" + last_name)
-           // console.log("age :" + age)
-           // console.log("phone_number :" + phone_number)
-           // console.log("checked :" + checked)
-           // console.log("selectedValue :" + selectedValue)
-           //console.log("correct") */
-
+           console.log("first_name :" + first_name)
+           console.log("last_name :" + last_name)
+           console.log("age :" + age)
+           console.log("phone_number :" + phone_number)
+           console.log("checked :" + checked)
+           console.log("selectedValue :" + selectedValue)*/
+         console.log("correct Info ")
 
          //kandir l mise a jour l insert_data hyt n9edar nmshy l handleSignUp o lcreation dyal l user 
          //tkon failed o naawd ndkhal l hena donc aykhes nej3ha true bash n inseré new user 
          this.state._insert_data = "true"
-
-         //like _insert_data
-         // this.state._delet_data = null
 
          setTimeout(() => { this.handleSignUp() }, 2000)
       }
@@ -219,10 +189,8 @@ export default class SignUpGmail extends Component {
       const email_user_ = navigation.getParam('current_user')
 
       const {
-         // _delet_data,
          selectedValue, _insert_data, error_msg_age, checked, age, is_click_confirm, first_name_error, last_name_error,
-         first_name, last_name, email, password, phone_number, error_msg_email, error_msg_pwd
-         , error_msg_confim_pwd, confirm_password, error_msg_phone
+         first_name, last_name, phone_number, error_msg_phone
       } = this.state;
 
       return (
@@ -380,12 +348,8 @@ export default class SignUpGmail extends Component {
             li hya tableau o kandir f lawl dyaleha type wash l insert ola delet bash nlshy l component
             dyali n tchecki type bash naarf wash an inser ola an delet */}
             {(_insert_data != null) ? (<DataBasecomponent
-               data={["insert", email_user_, password, "first_name", last_name, phone_number
+               data={["insert", email_user_, 'default', first_name, last_name, phone_number
                   , age, checked, selectedValue]} />) : (null)}
-
-            {/* {si l user deja kan kan supprimih men l base donn o kan passi ghyr gmail o howa
-             f  kay9alb aalih b gmail  o kaysprimih} */}
-            {/* {(_delet_data != null) ? (<DataBasecomponent data={["delet", email, password]} />) : (null)} */}
 
          </View>
 

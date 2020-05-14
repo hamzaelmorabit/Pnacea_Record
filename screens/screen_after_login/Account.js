@@ -3,7 +3,8 @@ import {
    StyleSheet, TouchableOpacity,
    View, Text
 } from 'react-native';
-import * as firebase from 'firebase'
+import * as firebase from 'firebase';
+
 import { Asset } from 'expo-asset'
 import ImagePicker from 'react-native-image-crop-picker';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -21,20 +22,59 @@ export default class Account extends Component {
    state = {
       email: "",
       photoUrl: "",
-
+      yearsNow: ""
    };
-   compon = () => {  this.props.navigation.navigate("stack_log_in")}
+
+   reauthenticate = (currentPassword) => {
+      var user = firebase.auth().currentUser;
+      var cred = firebase.auth.EmailAuthProvider.credential(
+          user.email, currentPassword);
+      return user.reauthenticateWithCredential(cred);
+    }
+   //  ("new        ")
+   passwordReset = () => {
+
+      this.reauthenticate("new        ").then(() => {
+         var user = firebase.auth().currentUser;
+         user.updatePassword("e").then(() => {
+           console.log("Password updated!");
+         }).catch((error) => {   this.state.email =error ; });
+       }).catch((error) => {
+         this.state.email =error
+         console.log(this.state.email + "mm"); });
+   }
+
+
+   // passwordReset =   ("111111", "newPassword") => {
+        
+      
+    
+   //    // await (firebase.auth().sendPasswordResetEmail(email))
+   //    //    .catch(
+   //    //       function (error) {
+              
+   //    //          Alert.alert('Reset Password Failed ', error + ' Please try again lateddr   '
+   //    //             , [ { text: 'OK',onPress: () => { }  }]);
+   //    //       }
+   //    //    )
+   // }
+
+
+   compon = () => { this.props.navigation.navigate("stack_log_in") }
    componentDidMount = () => {
       console.log("componentDidMount of Account")
       var user = firebase.auth().currentUser;
-    
+
       if (user != null) {
          // const { email } = firebase.auth().currentUser;
-         
+
          this.setState({ email: user.email });
          console.log("this.state.email" + user.emai)
-      }else{
-        this.props.navigation.navigate("stack_log_in")
+
+
+         this.setState({ yearsNow: new Date().getFullYear() });
+      } else {
+         this.props.navigation.navigate("stack_log_in")
       }
 
    }
@@ -60,56 +100,15 @@ export default class Account extends Component {
 
 
          <View style={styles.container1}>
-            {(this.state.email == "") ? <Text onPress={()=>{this.compon()}}>{this.state.email} + "yehssh"</Text> : null}
-            <Text>{email} FNAME</Text> 
+            {(this.state.email == "") ? <Text onPress={() => { this.compon() }}>{this.state.email} + "yehssh"</Text> : null}
+            <Text>{email}Email !!</Text>
 
-            {/* {(fname != "") ? (<DataBaseComponent
-               data={fname}
-               navigation={this.props.navigation}
-            />) : <Text> {fname} + "fname != """</Text> } */}
-            {/* {(this.state.email == "") ? (<DataBasecomponent
-               data={email} />) : ((fname != "") ? (   
-                  <DataBasecomponent
-                     data={fname}
-                     // navigation={this.props.navigation}
-                  />
-
-
-               ) : <Text> {fname} + "fname != """</Text>)} */}
-
-               {/* {(true) ? (<DataBasecomponent data={["get_data", email]} />) : (null)} */}
-               {(this.state.email != "") ? (<DataBasecomponent  
-                navigation={this.props.navigation} data={["get_data", email]} />) : (
-                  
-                  <Text>not essxecuted</Text>
+            {(this.state.email != "") ? (<DataBasecomponent
+               navigation={this.props.navigation} data={["get_data", email]} />) : (<Text>not essxecuted</Text>
                )}
-            {/* {(this.state.email == "") ? (
-               <DataBaseComponent
-                  data={email}
-                  navigation={this.props.navigation} />
 
-
-            ) : (fname != "") ? (
-               <DataBaseComponent
-                  data={fname}
-                  navigation={this.props.navigation}
-               /> 
-
-
-            ) : <Text> {fname} + "fname != """</Text>}*/}
-
-            {/* <NavigationEvents
-               onWillFocus={payload => console.log('will focus', payload)}
-               onDidFocus={payload => console.log('did focus', payload)}
-               onWillBlur={payload => console.log('will blur', payload)}
-               onDidBlur={payload => console.log('did blur', payload)}
-            /> */}
-            {/* <Text>{DataBaseComponent.getDataOfUSer()}</Text> */}
-            <View
-               style={{ bottom: 40 }}
-            >
+            <View style={{ bottom: 40 }}>
                <TouchableOpacity style={styles.buttom2} >
-
                   <LinearGradient start={{ x: 0, y: 0 }}
                      end={{ x: 1, y: 1 }}
                      locations={[0.0, 100]}
@@ -126,16 +125,13 @@ export default class Account extends Component {
 
                </TouchableOpacity>
 
-
-
-
             </View>
             <View style={{ top: 90, }}>
                <View style={{ top: 30, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>First Name    </Text>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 40 }}>
-                   {firstName} 
-                  
+                     {firstName}
+
                   </Text>
                </View>
                <View style={{ top: 60, flexDirection: 'row' }}>
@@ -147,32 +143,38 @@ export default class Account extends Component {
                <View style={{ top: 90, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Phone id </Text>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 77 }}>
-                  {id}
+                     {id}
                   </Text>
                </View>
                <View style={{ top: 120, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Birthday  </Text>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 65 }}>January 1,
-                   {age} 
-                   </Text>
+                   {this.state.yearsNow - age}
+                     {/* {new Date().toLocaleString()} */}
+                  </Text>
                </View>
                <View style={{ top: 150, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Gendre  </Text>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 71 }}>
-                  {gendre}
-                   </Text>
+                     {gendre}
+                  </Text>
                </View>
                <View style={{ top: 180, flexDirection: 'row' }}>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Blood Type </Text>
                   <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 50 }}>
-                  {blood_type} 
+                     {blood_type}
                   </Text>
                </View>
             </View>
 
             <View style={{ bottom: 40, paddingRight: 11, paddingLeft: 2, flexDirection: 'row' }}>
-               <TouchableOpacity style={styles.buttom22} >
+               <TouchableOpacity style={styles.buttom22}
 
+                  onPress={() => { console.log("press rset " + email) 
+              //   this.passwordReset(email)
+            this.props.navigation.navigate("navig_sendResetGmail")
+                  }
+                  } >
                   <LinearGradient start={{ x: 0, y: 0 }}
                      end={{ x: 1, y: 1 }}
                      locations={[0.0, 100]}
@@ -184,9 +186,6 @@ export default class Account extends Component {
                         color='white'
                         size={30}
                      />
-
-
-
                      <Text style={{ fontSize: 13, top: -15, color: 'white' }}>        Reset Password </Text>
                   </LinearGradient>
 

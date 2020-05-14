@@ -5,20 +5,17 @@ import React, { Component } from 'react';
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Logo_Panacea from './Logo_Panacea';
-import DataBasecomponent from './DataBase/DataBaseComponent'
-
 
 
 export default class LogIn extends Component {
-   // constructor() {
-   //    super();
-   constructor(props) {
-      super(props);
 
-   }
+      constructor(props) {
+         super(props);
+
+      }
+
       //hado les variables li anhtaj 
       state   =  {
-    
 
          email: '',//aykon l email dyalli
          password: '',//password dyali
@@ -30,96 +27,54 @@ export default class LogIn extends Component {
          //o kan affchih
 
         _user_email_connect_gmail : null ,
-        _user_password_connect_gmail : '' ,
         error_msg_email:''
-      //   _user_nameLast_connect_gmail : '' ,
-         // _insert_data:null ,
-         // click : null
+
       }
-   // }
+
+
+
    componentDidMount() {
       console.log("Login ...")
-   }
-//  funct = async  (type) => {
-// if (type === "success"){
-//    console.log(type + 'lllllllll')
-//    this.state._insert_data = "pleian" 
-//             console.log(this.state._insert_data)
-// }
-// }
-   //hena kan tconnecta b gmail 
-
-   // handleSignUp2 = async () => {
-   //    (userData) => {
-      
-   //          return firebase
-   //             .firestore()
-   //             .collection('users')
-   //             .doc(`${userData.uid}`)
-   //             .set(userData)
-   //       }
-   //       // console.log(this.props.navigation.navigate('navig_maps'))
-   //       //  this.props.navigation.navigate('navig_maps')
-      
-   // }
-
-    getPassWordData =  () => {
-      // const { navigation } = this.props;
-
-      // this.state._user_password_connect_gmail =   navigation.getParam('password')
-      // console.log("_user_password_connect_gmail : "+this.state._user_password_connect_gmail)
    }
 
 
 
    sign_in_with_gmail = async () => {
       try {
-
          const result = await Google.logInAsync({
             androidClientId:
                "238735614245-jdg35vclgpk2tioq710qdpq04ohhr969.apps.googleusercontent.com",
             scopes: ["profile", "email"],
-
          })
 
          if (result.type === "success") {
-            // getPassWordData()
             this.setState({ error_msg_email: '' })
             this.setState({_user_email_connect_gmail : result.user.email})
             console.log('success connect with gmail')
-            
-            console.log(this.state.error_msg_email + "$$$$")
-      
-            
-            // firebase.auth().signInWithEmailAndPassword(result.user.email,this.state._user_password_connect_gmail)
+
             await firebase
             .auth()
             .createUserWithEmailAndPassword(this.state._user_email_connect_gmail,"default").catch((error)=>{
                this.setState({ error_msg_email: error.message })
                console.log("Error createUserWithEmailAndPassword!")
-            });
-               
-   
-         } else {
+            });             
+          } else {
             console.log("Cancelled!")
             this.setState({ error_msg_email: "Cancelled" })
-            // console.log(this.state._insert_data)
          }
       } catch (error) {
-         console.log("Error !!!!! : ", error)
+         console.log("Error is :  ", error)
          this.setState({ error_msg_email: error.message })
-         // console.log(this.state.error_msg_email+"error_msg_email ")
     
-      }
-      
+      } 
 
       if (this.state.error_msg_email == '') {
-         console.log("this.state.erreur_emaild" + this.state.error_msg_email)
-         console.log("Sign up good")
+         console.log("email of user : " +  this.state._user_email_connect_gmail)
+         console.log("SignUpGmail good")
          this.props.navigation.navigate("SignUpGmail", {current_user : this.state._user_email_connect_gmail })
          
       }else{
-         console.log(this.state.error_msg_email+"error_msg_email ")
+         console.log("error_msg_email :"+this.state.error_msg_email)
          if( this.state.error_msg_email == "The email address is already in use by another account."){
             Alert.alert(
                '\'Google Account\' error',
@@ -127,12 +82,9 @@ export default class LogIn extends Component {
                [ { text: 'Cancel', style: 'cancel', },
                   { text: 'OK', },]
             );
-         }
-       
-        
+         }      
       }
    }
-
 
    handle_sign_in() {
 
@@ -182,12 +134,6 @@ export default class LogIn extends Component {
               
                   this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
                })}
-         // }catch(error){ 
-         //    firebase.auth().onAuthStateChanged(user => {
-              
-         //       this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
-         //    })
-         // }
       } else {
 
          //y9ed l user ydkhal y tconecta donc erreur_email or erreur_password man ba3ed maymesah o ydir sign in 
@@ -216,22 +162,13 @@ export default class LogIn extends Component {
    }
 
 
-// componentWillUpdate = ()=>{
- 
-// }
-   render() {
-
-     
-       
+   render() {    
 
       //hena l'image dyal point d'itrrogation ! li atban ila kano aandi 1 men dak les champs empty
       //atban ila kan dak l erreur fih l messag (please fill all mendatory fields)
       const require_icon = require('../images/picturError.png');
       const icon = (this.state.erreur_empty_filds != '') ? require_icon : null;
-      const { _user_email_connect_gmail ,
-      _user_nameFirst_connect_gmail,
-      _user_nameLast_connect_gmail ,
-      } = this.state;
+   
       return (
 
          <View style={styles.container}>
@@ -297,10 +234,7 @@ export default class LogIn extends Component {
                </View>
 
                {/* ila l user werak aala forgot pws kan orientih l screen dyal "ForgotPassword" */}
-               <TouchableOpacity onPress={() => {
-                  
-                  
-                   this.props.navigation.navigate("ForgotPassword")
+               <TouchableOpacity onPress={() => { this.props.navigation.navigate("ForgotPassword")
                }}>
                   <Text style={{ left: 170 }}>Forgot the password ?</Text>
                </TouchableOpacity>
@@ -359,22 +293,6 @@ export default class LogIn extends Component {
 
                </TouchableOpacity>
             </View>
-             {/* {(this.state.click != null) ? (<DataBasecomponent
-               data={["insert", this.state.email, "password", "first_name", "last_name", "phone_number"
-                  , "age", "checked", "selectedValue"]} />) : (null)}
-                  {(this.state.click == null) ? (<DataBasecomponent
-               data={["delet", this.state.email, "password"]} />) : (null)} */}
-
-               {/* {(this.state._user_email_connect_gmail != null) ? (<DataBasecomponent  
-                navigation={this.props.navigation} data={["get_data_for_gmail",
-                this.state._user_email_connect_gmail]} />):(null)
-               } */}
-             {/* {(this.state.click  != null) ? (<DataBasecomponent
-               data={["insert", _user_email_connect_gmail , "default",_user_nameFirst_connect_gmail , _user_nameLast_connect_gmail
-                , "default"
-                  , "default", "default", "default"]} />) : (null)} */}
-               {/* {(this.state.click  != null) ? (<DataBasecomponent data={["delet", _user_email_connect_gmail, "default"]} />) : (null)} */}
-           
 
          </View>
       );
