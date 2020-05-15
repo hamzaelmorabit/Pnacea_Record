@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { TextInput, StyleSheet,Alert ,  ScrollView ,TouchableOpacity, View, Text, Image } from 'react-native';
+import { Modal, TextInput, StyleSheet, Alert, Button, ScrollView, TouchableOpacity, View, Text, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as firebase from 'firebase';
+import Loader from '../Loader';
 // import { Alert, Picker, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-export default class sendResetGmail extends Component {
+export default class ResetPassword extends Component {
 
    constructor() {
       super();
@@ -17,78 +18,80 @@ export default class sendResetGmail extends Component {
       current_pwd_error: null,
       confirm_pwd_error: null,
       new_pwd_error: null,
-       is_click_confirm: null
-
+      is_click_confirm: null,
+      //  loading:false
 
    }
 
 
    reauthenticate = (currentPassword) => {
       var user = firebase.auth().currentUser;
-      console.log("  user.email!" +  user.email); 
+      // console.log("  user.email!" + user.email);
       var cred = firebase.auth.EmailAuthProvider.credential(
-          user.email, currentPassword);
+         user.email, currentPassword);
       return user.reauthenticateWithCredential(cred);
-    }
+   }
 
 
+
+   //kan update hena  password kan aayt l  reauthenticate  o kan passi lih  currentPassword 
+   //si ila kan sehih kanmshi l navig_account o kan affiche alert comme quoi rah sehih si 
+   //non kan  affiche f current_pwd_error "The password is invalid"
    callFuctionPasswordReset = () => {
-      console.log(" current_pwd :" + this.state.current_pwd); 
-      console.log(" new_pwd : " + this.state.new_pwd); 
+      console.log(" current_pwd :" + this.state.current_pwd);
+      console.log(" new_pwd : " + this.state.new_pwd);
       this.reauthenticate(this.state.current_pwd).then(() => {
          var user = firebase.auth().currentUser;
          user.updatePassword(this.state.new_pwd).then(() => {
             console.log("Password updated!");
             this.props.navigation.navigate("navig_account")
             Alert.alert(
-               'Password updated',
-               "Your passaword is successful update ",
+               'Success!',
+               "Passaword updated successfully ! ",
                [
-                  // {
-                  //    text: 'Cancel',
-                   
-                  //    style: 'cancel',
-                  // },
+
                   {
                      text: 'OK', onPress: () => {
-                    
+
                      }
                   },
                ]
             );
-         }).catch((error) => { 
+         }).catch((error) => {
             // console.log(" current_pwd_error error !"); 
-         this.state.current_pwd_error ="The password is invalid"
-         console.log( this.state.current_pwd_error )
-      });
-      }).catch((error) => { 
+            this.state.current_pwd_error = "The password is invalid"
+            console.log(this.state.current_pwd_error)
+         });
+      }).catch((error) => {
          // console.log("new_pwd _error" );
-      this.state.current_pwd_error ="The password is invalid"
-      console.log( this.state.current_pwd_error + "     " +"current_pwd_error" )
+         this.state.current_pwd_error = "The password is invalid"
+         console.log(this.state.current_pwd_error + "     " + "current_pwd_error")
       });
       // console.log( this.state.current_pwd_error + "!:!:!:" )
       // if( this.state.current_pwd_error == null)  {console.log("succes up date password" );
-      setTimeout(()=> this.setState({current_pwd_error : "The password is invalid"})  , 3000);
+      console.log("!!!!!! ");
+
+      setTimeout(() => this.setState({ current_pwd_error: "The password is invalid" }), 3000);
 
    }
 
- 
 
 
 
 
+   //deja dertyha f sign up nafs l blan
    handleChangeText = (...args) => {
 
 
       switch (args[1]) {
 
          case 'current_pwd': {
-          
-               if (args[0] == "") this.setState({ current_pwd_error: "Please fill this field" })
-              
-               else  this.setState({ current_pwd_error: null })
-               // else { this.setState({ current_pwd_error: 'The new password must be 6 characters or more' }) }
-             break;
+
+            if (args[0] == "") this.setState({ current_pwd_error: "Please fill this field" })
+
+            else this.setState({ current_pwd_error: null })
+            // else { this.setState({ current_pwd_error: 'The new password must be 6 characters or more' }) }
+            break;
          }
 
 
@@ -130,11 +133,11 @@ export default class sendResetGmail extends Component {
    }
 
 
-
+//si maandi t erreur f new_pwd_error .. kan aayt l callFuctionPasswordReset
    handleResetPwd = () => {
 
-      console.log(" handleResetPwd!" ); 
-      let { new_pwd, current_pwd, confirm_pwd
+      // console.log(" handleResetPwd!");
+      const { new_pwd, current_pwd, confirm_pwd, loading
       } = this.state;
       this.setState({ is_click_confirm: true })
 
@@ -142,11 +145,11 @@ export default class sendResetGmail extends Component {
       if (new_pwd == "") this.state.new_pwd_error = 'Please fill this field'
       if (confirm_pwd == "") this.state.confirm_pwd_error = 'Please fill this field'
       if (
-         this.state.current_pwd_error == null && this.state.new_pwd_error == null
+         this.state.current_pwd_error == null
+         && this.state.new_pwd_error == null
          && this.state.confirm_pwd_error == null
       ) {
-         console.log(" handleResetPwd! Yess" ); 
-         // this.setState({ is_click_confirm: '' })
+         console.log(" Call function \"callFuctionPasswordReset\"");
 
          this.callFuctionPasswordReset()
       }
@@ -157,13 +160,14 @@ export default class sendResetGmail extends Component {
    render() {
       const {
          current_pwd, new_pwd, confirm_pwd,
-         current_pwd_error, confirm_pwd_error, new_pwd_error ,is_click_confirm } = this.state;
+         loading, current_pwd_error, confirm_pwd_error, new_pwd_error, is_click_confirm } = this.state;
 
       return (
          <View style={styles.container}>
-            <Text style={{ left: 30,top : 40,fontSize: 30 }}>Update your password</Text>
-       
-            <View style={{marginTop: 100 }}>
+
+            {/* <Text style={{ left: 30, top: 40, fontSize: 30 }}>Update your password</Text> */}
+
+            <View style={{ marginTop: 100 }}>
 
                <Text style={styles.etoilText}>*</Text>
                <TextInput
@@ -179,10 +183,11 @@ export default class sendResetGmail extends Component {
 
             </View>
             {current_pwd_error != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>
-               {current_pwd_error}</Text>) : (null)}
+               {current_pwd_error}</Text>) : (<Text style={styles.errorTextStyle}>
+               </Text>)}
 
 
-            <View style={{ marginRight: 40, marginTop: 10 }}>
+            <View style={{ marginRight: 40, marginTop: 30 }}>
                {/* <Text style={styles.etoilText}>*</Text> */}
                <Text style={styles.etoilText}>*</Text>
                <TextInput
@@ -195,10 +200,11 @@ export default class sendResetGmail extends Component {
                   }} ></TextInput>
             </View>
             {new_pwd_error != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>
-               {new_pwd_error}</Text>) : (null)}
+               {new_pwd_error}</Text>) : ((<Text style={styles.errorTextStyle}>
+               </Text>))}
 
 
-            <View style={{ marginRight: 40, marginTop: 10 }}>
+            <View style={{ marginRight: 40, marginTop: 30 }}>
                <Text style={styles.etoilText}>*</Text>
                <TextInput
                   style={confirm_pwd_error != null && is_click_confirm ? styles.inputErrorStyle : styles.input}
@@ -210,10 +216,11 @@ export default class sendResetGmail extends Component {
                   }} ></TextInput>
             </View>
             {confirm_pwd_error != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>
-               {confirm_pwd_error}</Text>) : (null)}
-            
+               {confirm_pwd_error}</Text>) : ((<Text style={styles.errorTextStyle}>
+               </Text>))}
+
             {/* Confirm button */}
-            <View style={{ marginLeft: 10, top: 25, marginTop: 20 }}>
+            <View style={{ marginLeft: 10, top: 25, marginTop: 40 }}>
                <TouchableOpacity
                   onPress={() => {
                      this.handleResetPwd();
@@ -232,19 +239,19 @@ export default class sendResetGmail extends Component {
                <View>
 
                   <TouchableOpacity
-                  onPress={() => {
-                     this.props.navigation.navigate("navig_account")
-                  }}
-          
-                   style={{
-                    left :60, marginLeft: 60, fontSize: 18, color: "blue", top: 50
-                  }}><Text>Back to tour profil </Text>
-                     <View style={{      left : 1,  borderBottomWidth: 1, borderColor: "blue", width: 115, marginLeft: -2, top: 5 }}></View>
+                     onPress={() => {
+                        this.props.navigation.navigate("navig_account")
+                     }}
+
+                     style={{
+                        left: 60, marginLeft: 60, fontSize: 18, color: "blue", top: 40
+                     }}><Text>Back to tour profil </Text>
+                     <View style={{ left: 1, borderBottomWidth: 1, borderColor: "blue", width: 115, marginLeft: -2, top: 5 }}></View>
                   </TouchableOpacity>
                </View>
 
             </View>
-            
+
          </View>
 
       );
@@ -271,8 +278,8 @@ const styles = StyleSheet.create({
       borderBottomColor: 'red',
 
       left: 25,
-   }, 
-    errorTextStyle: {
+   },
+   errorTextStyle: {
       color: "#E9446A",
       left: 37,
       marginTop: -10

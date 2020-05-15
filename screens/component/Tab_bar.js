@@ -141,7 +141,7 @@ export default class Tab_bar extends Component {
                <Text style={this.props.name == 'home' ? { color: "#8461c9", paddingRight: -39 } : { paddingLeft: -39 }}>
                   Home</Text>
                <Text style={this.props.name == 'searsh' ? { color: "#8461c9", paddingLeft: 31 } : { paddingLeft: 31 }}>
-                  Searsh</Text>
+               Search</Text>
                <Text style={this.props.name == 'maps' ? { color: "#8461c9", paddingLeft: 27 } : { paddingLeft: 27 }}>
                   Maps</Text>
                <Text style={this.props.name == 'notifications' ? { color: "#8461c9", paddingLeft: 18 } : { paddingLeft: 18 }}>
@@ -152,7 +152,7 @@ export default class Tab_bar extends Component {
 
             <View style={{ top: 30, flexDirection: "row" }}>
 
-               <View style={{ left: this.props.line_width }}>
+               <View style={{ left: this.props.line_position }}>
                   <LinearGradient start={{ x: 0, y: 0 }}
                      end={{ x: 1, y: 1 }}
                      locations={[0.0, 100]}

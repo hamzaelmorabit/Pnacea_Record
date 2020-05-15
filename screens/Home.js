@@ -34,7 +34,7 @@ export default class Home extends Component {
       // const { navigation } = this.props;
       // const fname = navigation.getParam('user_')
       // // console.log(firebase.auth() + "firebase.auth().currentUser.email")
-
+      console.log("home ....")
       // console.log(fname +" $$$$ ")
       var user = firebase.auth().currentUser;
       if (user != null) {  
@@ -94,14 +94,15 @@ export default class Home extends Component {
             <TouchableOpacity onPress={() => {
                this.signOutUser()
             }} >
-               <Text>{this.state.email}oooo</Text>
+             <Text style={{ alignItems: 'center', top: 40, fontSize: 30 }}>Welcom Home Page</Text>
+           
 
             </TouchableOpacity>
-            <View style={{top:-22}}>
+            <View style={{top:-40}}>
             <Tab_bar name="home"
             current_user={email}
          
-                line_width={-140}
+            line_position={-140}
                navigation={this.props.navigation}
 
             />

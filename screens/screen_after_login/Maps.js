@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
    StyleSheet,
-   View,Text
+   View, Text
 } from 'react-native';
 import * as firebase from 'firebase'
 import Tab_bar from './../component/Tab_bar'
@@ -11,7 +11,7 @@ export default class Account extends Component {
 
    state = {
 
-      email:''
+      email: ''
    };
 
    // componentDidMount = () => {
@@ -27,7 +27,7 @@ export default class Account extends Component {
 
          this.setState({ email: user.email });
       }
-      
+
       // this.props.navigation.navigate("my_account")
 
    }
@@ -40,13 +40,17 @@ export default class Account extends Component {
       const fname = navigation.getParam('user');
       return (
          <View style={styles.container1}>
+
             <View>
-               <Text>MAps maps{JSON.stringify(fname)}</Text>
-               <Text>MAps maps{JSON.stringify(fname)}</Text>
-               <Text>{this.state.email}</Text>
+       {/* <Text>MAps maps{JSON.stringify(fname)}</Text> */}
+               <Text style={{  alignItems: 'center',  top: 40, fontSize: 30 }}>Maps Page</Text>
             </View>
-             <Tab_bar navigation={this.props.navigation}   line_width={-15}  name="maps"/> 
-             
+            <View style={{ top: -20 }}>
+
+               <Tab_bar navigation={this.props.navigation} line_position={-15} name="maps" />
+            </View>
+
+
          </View>
       );
    }

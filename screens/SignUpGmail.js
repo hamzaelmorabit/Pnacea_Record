@@ -1,11 +1,13 @@
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Google from "expo-google-app-auth";
 import * as firebase from 'firebase';
 import React, { Component } from 'react';
-import { Alert, Picker, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Picker, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
 import DataBasecomponent from './DataBase/DataBaseComponent';
 import { YellowBox } from 'react-native';
+import Loader from './Loader';
 YellowBox.ignoreWarnings(['Setting a timer']);
 
 export default class SignUpGmail extends Component {
@@ -18,7 +20,7 @@ export default class SignUpGmail extends Component {
 
 
    state = {
-
+      loading: false,
       email_user: "",
       first_name: "",
       last_name: "",
@@ -39,11 +41,8 @@ export default class SignUpGmail extends Component {
    }
 
 
-   componentDidMount = () => {
-      console.log("componentWillUnmount Sing Up gmail")
-      const { navigation } = this.props;
-
-      console.log("gmail user name" + navigation.getParam('current_user'))
+   componentDidMount = async () => {
+      console.log("ComponentWillUnmount --- SignUpGmail")
 
    }
 
@@ -53,16 +52,21 @@ export default class SignUpGmail extends Component {
       try {
          const { navigation } = this.props;
          const email_user_ = navigation.getParam('current_user')
+         const idToken = navigation.getParam('idToken')
+         const accessToken = navigation.getParam('accessToken')
+
          console.log("email_user_ ->" + email_user_)
 
-         await firebase.auth().signInWithEmailAndPassword(email_user_, "default")
-         firebase.auth().onAuthStateChanged(user => {
-            console.log("onAuthStateChanged ...")
-            this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
-         })
+         const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
+         firebase.auth().signInAndRetrieveDataWithCredential(credential)
+
+         console.log("wait for go to  Loadain  ...")
+     
+         setTimeout(() => { this.props.navigation.navigate("Loading") }, 3000);
+        
 
       } catch (error) {
-         console.log("error signInWithEmailAndPassword !!!!!!!!" + error)
+         console.log("error signInAndRetrieveDataWithCredential !!" + error)
       }
 
 
@@ -142,7 +146,7 @@ export default class SignUpGmail extends Component {
 
 
    handl_confirm = async () => {
-
+      //  this.props.navigation.navigate("stack_log_in")
       let { age, first_name, last_name, phone_number
       } = this.state;
       this.setState({ is_click_confirm: true })
@@ -156,15 +160,7 @@ export default class SignUpGmail extends Component {
          this.state.first_name_error == null && this.state.last_name_error == null
          && this.state.error_msg_age == null && this.state.error_msg_phone == null
       ) {
-         /*   // console.log("email :" + email)
-           // console.log("password :" + password) 
-           // console.log("confirm_password :" + confirm_password)
-           console.log("first_name :" + first_name)
-           console.log("last_name :" + last_name)
-           console.log("age :" + age)
-           console.log("phone_number :" + phone_number)
-           console.log("checked :" + checked)
-           console.log("selectedValue :" + selectedValue)*/
+         this.setState({loading : true})
          console.log("correct Info ")
 
          //kandir l mise a jour l insert_data hyt n9edar nmshy l handleSignUp o lcreation dyal l user 
@@ -175,11 +171,6 @@ export default class SignUpGmail extends Component {
       }
 
    }
-
-
-
-
-
 
 
 
@@ -196,7 +187,9 @@ export default class SignUpGmail extends Component {
       return (
          <View style={styles.container}>
             <Text style={styles.greeting}></Text>
-            <Text>{email_user_}</Text>
+            <Loader
+          loading={this.state.loading} />
+            {/* <Text>{email_user_}</Text> */}
             <ScrollView contentContainerStyle={styles.contentContainer}>
 
                {/* // First Name */}
@@ -307,7 +300,7 @@ export default class SignUpGmail extends Component {
 
                   <Picker
                      selectedValue={this.state.selectedValue}
-                     style={{ height: 50, marginRight: 120, width: 85 }}
+                     style={{ height: 50, marginRight: 120, width: 95 }}
                      onValueChange={(itemValue) => { this.setState({ selectedValue: itemValue }) }}
                   >
                      <Picker.Item label="A+" value="A+" />
@@ -348,15 +341,17 @@ export default class SignUpGmail extends Component {
             li hya tableau o kandir f lawl dyaleha type wash l insert ola delet bash nlshy l component
             dyali n tchecki type bash naarf wash an inser ola an delet */}
             {(_insert_data != null) ? (<DataBasecomponent
-               data={["insert", email_user_, 'default', first_name, last_name, phone_number
+               data={["insert", email_user_, "true", first_name, last_name, phone_number
                   , age, checked, selectedValue]} />) : (null)}
-
          </View>
 
       );
 
    }
 }
+
+
+
 
 const styles = StyleSheet.create({
 
@@ -492,3 +487,5 @@ const styles = StyleSheet.create({
    },
 
 });
+
+

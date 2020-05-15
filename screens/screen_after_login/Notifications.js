@@ -19,10 +19,14 @@ export default class Notifications extends Component {
       return (
          <View style={styles.container1}>
             <View>
-               <Text>Notifications</Text>
-            </View>
             
-             <Tab_bar navigation={this.props.navigation}  line_width={65 } name="notifications"/> 
+               <Text style={{ left: 10, top: 40, fontSize: 30 }}>Notifications Page</Text>
+            </View>
+            <View style={{ top: -20 }}>
+            
+            <Tab_bar navigation={this.props.navigation}  line_position={65 } name="notifications"/> 
+         </View>
+            
 
          </View>
       );

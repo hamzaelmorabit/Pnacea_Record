@@ -8,7 +8,7 @@ import LogIn from './screens/LogIn';
 import Account from './screens/screen_after_login/Account';
 import Maps from './screens/screen_after_login/Maps';
 import Notifications from './screens/screen_after_login/Notifications';
-import sendResetGmail from './screens/screen_after_login/sendResetGmail';
+import ResetPassword from './screens/screen_after_login/ResetPassword';
 import Searsh from './screens/screen_after_login/Searsh';
 import SendPassword from './screens/SendPassword';
 import SignUp from './screens/SignUp';
@@ -42,23 +42,61 @@ if (!firebase.apps.length) {
 
 
 const stack_home = createStackNavigator({
-
+ 
   Home:
   {
     screen: Home,
     navigationOptions: {
       title: '',
+      headerStyle: {
+        backgroundColor: '#fff',
+        elevation: 0
+      },
+      headerTitleStyle: {
+        header: null,
+      },
+      headerLeft: null
     }
 
 
   },
-  
+  SignUpGmail: {
+    screen: SignUpGmail,
+    navigationOptions: {
+      title: 'Register',
+      headerLeft: null,
+      headerTitleStyle: {
+       left: 110,
+       fontSize:30
+       // alignContent: 'center',
+        // header: null,
+      },
+    },
+  },
+  // SignUpGmail: {
+  //   screen: SignUpGmail,
+  //   navigationOptions: {
+  //     title: 'Sign up',
+
+  //     headerTitleStyle: {
+  //       // fontWeight: 'bold',
+  //       left: 70,
+  //     },
+  //   },
+  // },
   navig_maps:
   {
     screen: Maps,
     navigationOptions: {
       title: '',
-      // header: null,
+      headerStyle: {
+        backgroundColor: '#fff',
+        elevation: 0
+      },
+      headerTitleStyle: {
+        header: null,
+      },
+      headerLeft: null
     }
   },
   navig_account:
@@ -66,6 +104,15 @@ const stack_home = createStackNavigator({
     screen: Account,
     navigationOptions: {
       title: '',
+      headerStyle: {
+        backgroundColor: '#fff',
+        elevation: 0
+      },
+      headerTitleStyle: {
+        header: null,
+      },
+      headerLeft: null
+      
     },
   },
 
@@ -73,21 +120,40 @@ const stack_home = createStackNavigator({
     screen: Searsh,
     navigationOptions: {
       title: '',
-      // header: null,
+      headerStyle: {
+        backgroundColor: '#fff',
+        elevation: 0
+      },
+      headerTitleStyle: {
+        header: null,
+      },
+      headerLeft: null
     }
   },
   navig_notifactions: {
     screen: Notifications,
     navigationOptions: {
       title: '',
-      // header: null,
+      headerStyle: {
+        backgroundColor: '#fff',
+        elevation: 0
+      },
+      headerTitleStyle: {
+        header: null,
+      },
+      headerLeft: null
     }
   },
-  navig_sendResetGmail: {
-    screen: sendResetGmail,
+  navig_ResetPassword: {
+    screen: ResetPassword,
     navigationOptions: {
-      title: '',
+      title: 'Update Password',
+      headerLeft: null,
       // header: null,
+      headerTitleStyle: {
+        left: 80,
+      },
+   
     }
   },
 })
@@ -171,17 +237,7 @@ const stack_log_in = createStackNavigator({
       },
     },
   },
-  SignUpGmail: {
-    screen: SignUpGmail,
-    navigationOptions: {
-      title: 'Sign up',
-
-      headerTitleStyle: {
-        // fontWeight: 'bold',
-        left: 70,
-      },
-    },
-  },
+  
   LogIn: {
     screen: LogIn,
     navigationOptions: {

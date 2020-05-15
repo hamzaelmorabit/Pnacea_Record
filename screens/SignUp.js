@@ -6,6 +6,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
 import DataBasecomponent from './DataBase/DataBaseComponent';
 import { YellowBox } from 'react-native';
+import Loader from './Loader';
 YellowBox.ignoreWarnings(['Setting a timer']);
 
 export default class SignUp extends Component {
@@ -23,6 +24,8 @@ export default class SignUp extends Component {
       checked: 'male',
       selectedValue: 'A+',
 
+
+      error_msg_: null,
       error_msg_email: null,
       error_msg_pwd: null,
       error_msg_confim_pwd: null,
@@ -33,42 +36,52 @@ export default class SignUp extends Component {
 
       is_click_confirm: null,//lakherin bayenin hadi dertha hyt anbghy n afficher les erreurs façon dyanmique
       //mnin l user aydkhal ila mkontsh dayer hadi ay t aficha l messag leta7tf l code  atban mzn 
-
-      _insert_data: null,//aala hesab l base donne
-      // _delet_data: null,//aala 
+      loading: false,
+      _insert_data: null,//for base donnee
+     
    }
 
 
    componentWillUnmount = () => {
-      // const { navigation } = this.props;
-      // const fname = navigation.getParam('user_')
       console.log("componentWillUnmount Sing Up")
    }
 
 
-   //bash katkon aandi formulair mzyana kan nji  l hena sign up
+
    handleSignUp = async () => {
       try {
 
-         // const response = 
+         //$ const response = 
          await firebase
             .auth()
             .createUserWithEmailAndPassword(this.state.email, this.state.password)
+            console.log("gooofcreateUserWithEmailAndPassword ")
+            await firebase.auth().signOut() //kaymshi loading bash ydkhal ana kankkhajo ywali mdeconnecter bash ydir sign in
+
+
 
       } catch (error) {
          console.log("erro Sign up  create User With Email And Password")
-         // this.props.navigation.navigate("stack_log_in")
+         //$this.props.navigation.navigate("stack_log_in")
+
          //erreur li kayun hena howa dak l gmail f l formlaire ykon sehih mais hena
          // la hyt y9edar ukon m staamlo onther user dkshu aalash momkin ykon aandi erreur
-         // so aykkheni ndir delet f  la base donné hyt deja dert insert o insert anaatyha null
+         // kandir navigation f blastiihyt par defaut kaymshi y naviguer  l login !!!!
+         this.props.navigation.navigate("SignUp")      
+         this.setState({ error_msg_: error.message })
+         this.setState({ loading: true })
 
-         this.props.navigation.navigate("SignUp")
-         // firebase.auth().signOut()
-         this.setState({ error_msg_email: error.message })
+         //Alert bash nzid n2dk aalih naviguer f blastiii 
+         //kaymshi lya l if kayle9a deja aandi erreur kaydir   this.state._insert_data "null"
+         //moraha kay executer hadi 
+         //f cas mashy erreur kaymshy nishan y naviguer mkaydkhalsh l hena aslan so had alert maydirhash
          setTimeout(() => {
+            this.setState({ loading: false })
+            this.setState({ error_msg_email: error.message })
+
             Alert.alert(
                'Email error',
-               this.state.error_msg_email+"try again",
+               this.state.error_msg_email + "try again",
                [
                   {
                      text: 'Cancel',
@@ -78,25 +91,25 @@ export default class SignUp extends Component {
                   {
                      text: 'OK', onPress: () => {
                         console.log("Alert  press Ok");
-                        // console.log(this.state._insert_data);
+                        //$ console.log(this.state._insert_data);
                         this.props.navigation.navigate("SignUp")
                      }
                   },
                ]
             );
 
-         }, 4000);
+         }, 5000);
 
-         // console.error(error)
+         //$ console.error(error)
       }
-      // console.log("this.state.error_msg_emai" + this.state.error_msg_emai)
-      if (this.state.error_msg_email == null) {
-    
-         console.log("Sign up good")
-        await  firebase.auth().signOut() //kaymshy nishan y t conceta ana kankharjo et bash kan kon f 
-        //account kanlgah deja user null o kan reja3 l login
   
-      }else{
+      //$ console.log("this.state.error_msg_emai" + this.state.error_msg_emai)
+      if (this.state.error_msg_ == null) {
+ 
+         console.log("Sign up good")
+        
+
+      } else {
          this.state._insert_data = null
       }
 
@@ -148,7 +161,7 @@ export default class SignUp extends Component {
          case 'confirm': {
             if (args[0] == '') {
                this.setState({ error_msg_confim_pwd: "Please fill this field" })
-               // console.log(this.state.error_msg_confim_pwd);
+               //$ console.log(this.state.error_msg_confim_pwd);
             } else {
                if (args[0] != this.state.password) {
                   this.setState({ error_msg_confim_pwd: 'The confirm password does not match' })
@@ -164,7 +177,7 @@ export default class SignUp extends Component {
 
             if (args[0] == '') {
                this.setState({ first_name_error: "Please fill this field" })
-               // console.log(this.state.error_msg_confim_pwd);
+               //$ console.log(this.state.error_msg_confim_pwd);
             } else {
                if (!(new RegExp(/^[a-zA-Z ]+$/).test(args[0]))) {
                   this.setState({ first_name_error: 'The first name is badly formatted' })
@@ -179,7 +192,7 @@ export default class SignUp extends Component {
          case 'last_name': {
             if (args[0] == '') {
                this.setState({ last_name_error: "Please fill this field" })
-               // console.log(this.state.error_msg_confim_pwd);
+               //$ console.log(this.state.error_msg_confim_pwd);
             } else {
                if ((!new RegExp(/^[a-zA-Z ]+$/).test(args[0]))) {
                   this.setState({ last_name_error: 'The last name is badly formatted' })
@@ -198,7 +211,7 @@ export default class SignUp extends Component {
             } else {
                if (new RegExp(/^(([1]{1}[0-9]{0,2})|([1-9]{1}[0-9]{0,1}))$/).test(args[0])) {
                   this.setState({ error_msg_age: null })
-                  // console.log('kkk ')
+                  // $console.log('kkk ')
                   this.setState({ age: args[0] })
                } else {
                   this.setState({ error_msg_age: 'The age is badly formatted' })
@@ -209,7 +222,7 @@ export default class SignUp extends Component {
          case 'phone': {
             //maroc
             if (new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/).test(args[0])) {
-               // ((0[0-9])[\-]([0-9]{2}[\-]){3}(([0-9]){2})){1}
+               //$ ((0[0-9])[\-]([0-9]{2}[\-]){3}(([0-9]){2})){1}
 
                this.setState({ error_msg_phone: null })
                //si une seul verifier return true s-il depass 06-10..92 22 
@@ -234,7 +247,7 @@ export default class SignUp extends Component {
       this.setState({ is_click_confirm: true })
 
       if (email == "") this.state.error_msg_email = 'Please fill this field';
-      // this.setState({error_msg_email: 'Please fill this field'}) } 
+      //$ this.setState({error_msg_email: 'Please fill this field'}) } 
       if (password == "") this.state.error_msg_pwd = 'Please fill this field'
       if (confirm_password == "") this.state.error_msg_confim_pwd = 'Please fill this field'
       if (first_name == "") this.state.first_name_error = 'Please fill this field'
@@ -242,15 +255,15 @@ export default class SignUp extends Component {
       if (age == "") this.state.error_msg_age = 'Please fill this field'
       if (phone_number == "") this.state.error_msg_phone = 'Please fill this field'
 
-      // console.log(this.state.error_msg_email)
+      //$ console.log(this.state.error_msg_email)
 
-      if (this.state.error_msg_email == null
-         && this.state.error_msg_pwd == null) {
-         this.state._insert_data = "true"
-         // this.state._delet_data = null
+      //$ if (this.state.error_msg_email == null
+      //    && this.state.error_msg_pwd == null) {
+      //    this.state._insert_data = "true"
+      //    //$ this.state._delet_data = null
 
-         await this.handleSignUp()
-      }
+      //    await this.handleSignUp()
+      // }
 
       //tous est valider  (error_msg_email, ... ) rest null
       if (this.state.error_msg_email == null
@@ -258,24 +271,21 @@ export default class SignUp extends Component {
          && this.state.error_msg_pwd == null
          && this.state.first_name_error == null && this.state.last_name_error == null && this.state.error_msg_age == null && this.state.error_msg_phone == null
       ) {
-         /*   // console.log("email :" + email)
+
+         /*  $ // console.log("email :" + email)
            // console.log("password :" + password)
            // console.log("confirm_password :" + confirm_password)
            // console.log("first_name :" + first_name)
            // console.log("last_name :" + last_name)
            // console.log("age :" + age)
-           // console.log("phone_number :" + phone_number)
+           //$ console.log("phone_number :" + phone_number)
            // console.log("checked :" + checked)
-           // console.log("selectedValue :" + selectedValue)
-           //console.log("correct") */
+           //$ console.log("selectedValue :" + selectedValue)
+           //console.log("correct") $*/
 
 
-         //kandir l mise a jour l insert_data hyt n9edar nmshy l handleSignUp o lcreation dyal l user 
-         //tkon failed o naawd ndkhal l hena donc aykhes nej3ha true bash n inseré new user 
+         //bash n inserer f base donne car et l'insertion si ila mkansh l user aandi  deja 
          this.state._insert_data = "true"
-
-         //like _insert_data
-         // this.state._delet_data = null
 
          setTimeout(() => { this.handleSignUp() }, 2000)
       }
@@ -302,7 +312,8 @@ export default class SignUp extends Component {
       return (
          <View style={styles.container}>
             <Text style={styles.greeting}></Text>
-
+            <Loader
+               loading={this.state.loading} />
             <ScrollView contentContainerStyle={styles.contentContainer}>
 
                {/* // email */}
@@ -514,12 +525,10 @@ export default class SignUp extends Component {
             li hya tableau o kandir f lawl dyaleha type wash l insert ola delet bash nlshy l component
             dyali n tchecki type bash naarf wash an inser ola an delet */}
             {(_insert_data != null) ? (<DataBasecomponent
-               data={["insert", email, password, first_name, last_name, phone_number
+               data={["insert", email, "false", first_name, last_name, phone_number
                   , age, checked, selectedValue]} />) : (null)}
 
-            {/* {si l user deja kan kan supprimih men l base donn o kan passi ghyr gmail o howa
-             f  kay9alb aalih b gmail  o kaysprimih} */}
-            {/* {(_delet_data != null) ? (<DataBasecomponent data={["delet", email, password]} />) : (null)} */}
+        
 
          </View>
 

@@ -34,57 +34,102 @@ export default class LogIn extends Component {
 
 
    componentDidMount() {
-      console.log("Login ...")
+      
+      console.log("Im into componentDidMount Login ...")
    }
 
+sign_in_with_gmail = async () => {
+   
+                     console.log("kkkkk")
+                  try {
+                     const result = await Google.logInAsync({
+                     androidClientId:
+                     "238735614245-jdg35vclgpk2tioq710qdpq04ohhr969.apps.googleusercontent.com",
+                  scopes: ["profile", "email"],
 
+                     })
+                     if (result.type === "success") {
+                        console.log("success connect with gmail")
+                        
+                        //for test if user exist or not i put a password of me is deplicate to  result.idToken
+                        //if error.code return   'auth/wrong-password' user exist but pwd is invalid is logic
+                        //because i put which password difficult  '40 > character he carries'
+                        firebase.auth().signInWithEmailAndPassword(result.user.email, result.idToken)
+                        .catch((error) => {
+                            if (error.code == 'auth/wrong-password') {
+                              console.log("password error")
+                              const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken, result.accessToken);
+                               firebase.auth().signInAndRetrieveDataWithCredential(credential).then(function(result){
+                                    console.log("error result" +result);
+                                 });
+                           }else{
+                              //user not found 
+                              // console.log("idToken ->" + result.idToken)
+                              console.log("user not found")
+                              this.props.navigation.navigate("SignUpGmail", {
+                                  current_user : result.user.email ,
+                                 idToken : result.idToken ,
+                                 accessToken : result.accessToken ,})
+                           }
+                           })
+               
+                           } else {
+                           console.log("cancelled")
+                           }
+                              } catch (e) {
+                              console.log("error", e)
+                              }
+               };
 
-   sign_in_with_gmail = async () => {
-      try {
-         const result = await Google.logInAsync({
-            androidClientId:
-               "238735614245-jdg35vclgpk2tioq710qdpq04ohhr969.apps.googleusercontent.com",
-            scopes: ["profile", "email"],
-         })
+   // Id// 808651525934-f2eeqpihat4n8ghsm192dpli55dj2f7d.apps.googleusercontent.com
+   // sign_in_with_gmail = async () => {
+   //    try {
+   //       const result = await Google.logInAsync({
+   //          androidClientId:
+   //             "238735614245-jdg35vclgpk2tioq710qdpq04ohhr969.apps.googleusercontent.com",
+   //          scopes: ["profile", "email"],
+   //       })
 
-         if (result.type === "success") {
-            this.setState({ error_msg_email: '' })
-            this.setState({_user_email_connect_gmail : result.user.email})
-            console.log('success connect with gmail')
+   //       if (result.type === "success") {
+   //          this.setState({ error_msg_email: '' })
+   //          this.setState({_user_email_connect_gmail : result.user.email})
+   //          console.log('success connect with gmail')
 
-            await firebase
-            .auth()
-            .createUserWithEmailAndPassword(this.state._user_email_connect_gmail,"default").catch((error)=>{
-               this.setState({ error_msg_email: error.message })
-               console.log("Error createUserWithEmailAndPassword!")
-            });             
-          } else {
-            console.log("Cancelled!")
-            this.setState({ error_msg_email: "Cancelled" })
-         }
-      } catch (error) {
-         console.log("Error is :  ", error)
-         this.setState({ error_msg_email: error.message })
+   //          await firebase
+   //          .auth()
+   //          .createUserWithEmailAndPassword(this.state._user_email_connect_gmail,"default").catch((error)=>{
+   //             this.setState({ error_msg_email: error.message })
+   //             console.log("Error createUserWithEmailAndPassword!")
+   //          });             
+   //        } else {
+   //          console.log("Cancelled!")
+   //          this.setState({ error_msg_email: "Cancelled" })
+   //       }
+   //    } catch (error) {
+   //       console.log("Error is :  ", error)
+   //       this.setState({ error_msg_email: error.message })
     
-      } 
+   //    } 
 
-      if (this.state.error_msg_email == '') {
-         console.log("email of user : " +  this.state._user_email_connect_gmail)
-         console.log("SignUpGmail good")
-         this.props.navigation.navigate("SignUpGmail", {current_user : this.state._user_email_connect_gmail })
+   //    if (this.state.error_msg_email == '') {
+   //       console.log("email of user : " +  this.state._user_email_connect_gmail)
+   //       console.log("SignUpGmail good")
+   //       this.props.navigation.navigate("SignUpGmail", {current_user : this.state._user_email_connect_gmail })
          
-      }else{
-         console.log("error_msg_email :"+this.state.error_msg_email)
-         if( this.state.error_msg_email == "The email address is already in use by another account."){
-            Alert.alert(
-               '\'Google Account\' error',
-               "The email address is already in use by another account. Try again",
-               [ { text: 'Cancel', style: 'cancel', },
-                  { text: 'OK', },]
-            );
-         }      
-      }
-   }
+   //    }else{
+   //       console.log("error_msg_email :"+this.state.error_msg_email)
+   //       if( this.state.error_msg_email == "The email address is already in use by another account."){
+   //          Alert.alert(
+   //             '\'Google Account\' error',
+   //             "The email address is already in use by another account. Try again",
+   //             [ { text: 'Cancel', style: 'cancel', },
+   //                { text: 'OK', },]
+   //          );
+   //       }      
+   //    }
+   // }
+
+
 
    handle_sign_in() {
 
@@ -103,6 +148,7 @@ export default class LogIn extends Component {
 
                //l'erreur dyal "password" password_empty kan redeha true bash  nerja3 dk champ dyal password 
                //color red 
+               console.log("error of course"+error.code)
                if (error.code == 'auth/wrong-password') {
 
                   this.setState({ password_empty: true });
@@ -128,9 +174,9 @@ export default class LogIn extends Component {
             console.log(this.state.erreur_password)
             console.log(this.state.erreur_email)
             if( this.state.erreur_password  == '' && this.state.erreur_email  == '' )
-                {console.log("all rught")
-                
-                firebase.auth().onAuthStateChanged(user => {
+                {
+                   console.log("signInWithEmailAndPassword Valide go change onAuthStateChanged ")
+                 firebase.auth().onAuthStateChanged(user => {
               
                   this.props.navigation.navigate(user ? "stack_home" : "stack_log_in")
                })}
@@ -251,7 +297,7 @@ export default class LogIn extends Component {
                   locations={[0.0, 100]}
                   colors={['#8461c9', '#BD7AE3']}
                   style={styles.gradient}>
-                  <Text style={{ color: "#fff" }}>sign in</Text>
+                  <Text style={{ color: "#fff" }}>Sign Iin</Text>
                </LinearGradient>
 
             </TouchableOpacity>
@@ -279,21 +325,21 @@ export default class LogIn extends Component {
             <View>
                <Text style={{ top: 150, 
                // top: 150, 
-               top: 130, 
-               left: 60 }}>you don't have an account  !?</Text>
+               top: 150, 
+               left: 60 }}>you don't have an account ?</Text>
 
                <TouchableOpacity onPress={() => { this.props.navigation.navigate("SignUp") }}
                   style={{ padding: 5,
                   //  top: 125,
-                   top: 100, 
-                    left: 245, fontWeight: "bold" }}
+                   top: 125, 
+                    left: 233, fontWeight: "bold" }}
                   title="Sign up">
 
                   <Text style={{ fontWeight: "bold" }}>Sign Up</Text>
 
                </TouchableOpacity>
             </View>
-
+         
          </View>
       );
    }
@@ -482,24 +528,40 @@ const styles = StyleSheet.create({
 
 
 
+// sign_in_with_gmail = async () => {
+//    console.log("kkkkk")
+//   try {
+//      const result = await Google.logInAsync({
+//    androidClientId:
+//      "238735614245-jdg35vclgpk2tioq710qdpq04ohhr969.apps.googleusercontent.com",
+//   scopes: ["profile", "email"],
+
+//      })
+//      if (result.type === "success") {
+//         console.log("success")
+//        const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken, result.accessToken);
+//           firebase.auth().signInAndRetrieveDataWithCredential(credential).then(function(result){
+//             console.log("error" +result);
+//           });
+//   this.props.navigation.navigate("Loading");
+// } else {
+//   console.log("cancelled")
+// }
+//    } catch (e) {
+//      console.log("error", e)
+//    }
+//   };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//      GoogleSingnin.signIn().then((data)=>{
+// const firebaseid = firebase.auth.GoogleAuthProvider.credential(
+//    data.idToken,data.accessToken
+// );
+//      }).then((current_user)=>{
+//       console.log("success")
+//    }).catch((error) => {
+//       console.log("Error")
+//    });
 
 
 
