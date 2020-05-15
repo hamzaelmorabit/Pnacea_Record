@@ -63,12 +63,12 @@ export default class Account extends Component {
          // const { email } = firebase.auth().currentUser;
 
          this.setState({ email: user.email });
-         console.log("this.state.email" + user.emai)
+         console.log("this.state.email" + user.email)
 
 
          this.setState({ yearsNow: new Date().getFullYear() });
       } else {
-         this.props.navigation.navigate("stack_log_in")
+         // this.props.navigation.navigate("stack_log_in")
       }
 
    }
@@ -100,7 +100,12 @@ export default class Account extends Component {
                )}
 
             <View style={{ bottom: 80 }}>
-               <TouchableOpacity style={styles.buttom2} >
+               <TouchableOpacity style={styles.buttom2}
+                 onPress={() => {console.log('kkkkk')
+               //   this.props.navigation.navigate("navig_EditProfil",    {email_user : this.state.email})
+                     }} 
+               
+                >
                   <LinearGradient start={{ x: 0, y: 0 }}
                      end={{ x: 1, y: 1 }}
                      locations={[0.0, 100]}

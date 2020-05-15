@@ -70,6 +70,11 @@ export default class DataBasecomponent extends Component {
                 // console.log(' getDataOfUSer2')
                 // try { await this.getDataOfUSerEE(); }
                 // catch (error) { console.log('error getDataOfUSer') }
+            }else if (this.props.data[0] == "get_dataEdit") {
+           console.log(' getDataOfUSerEdit')
+                // try { await this.getDataOfUSerEE(); }
+                // catch (error) { console.log('error getDataOfUSer') }
+                this.getDataOfUSerEdit();
             }
             
             else{}
@@ -129,6 +134,54 @@ export default class DataBasecomponent extends Component {
 
 
 
+    
+    getDataOfUSerEdit = async () => {
+        // console.log( this.props.data + " : data ")
+        // window.location.reload(false);
+        // const {user_data_firstName} = this.state ; 
+        //  console.log(this.props.data)
+        // this.setState({ data: 'kkkkkkkkk' }) 
+        await firebase.database().ref('users').on('value', data => {
+            data.forEach((item) => {
+                // console.log(this.props.data[1])
+                if (item.val().email == this.props.data[1]) {
+
+                    console.log(item.val().id + "The id  of element i found ")
+                    this.state.user_data_email = item.val().email
+                    this.state.userForgmail = item.val().userForgmail 
+                    this.state.user_data_firstName = item.val().firstName
+                    this.state.user_data_lastName = item.val().lastName
+                    this.state.user_data_phoneNumber = item.val().phoneNumber
+                    this.state.user_data_age = item.val().age
+                    this.state.user_data_Gendre = item.val().gendre
+                    this.state.user_data_blood_type = item.val().bloodType
+                    this.state.user_data_id = item.val().id
+                  
+                }
+            })
+
+
+        console.log( 'this.state.user_data_firstName' +  this.state.user_data_firstName)
+            // console.log( this.state.user_data_password + "$$$")
+            this.props.navigation.navigate("navig_EditProfil", {
+                email: this.state.user_data_email,
+                userForgmail: this.state.userForgmail,
+                firstName: this.state.user_data_firstName,
+                lastName: this.state.user_data_lastName,
+                phoneNumber: this.state.user_data_phoneNumber,
+                age: this.state.user_data_age,
+                gendre: this.state.user_data_Gendre,
+                blood_type: this.state.user_data_blood_type,
+                id: this.state.user_data_id
+            })
+        })
+    }
+
+
+
+
+
+
     getDataOfUSer = async () => {
         // console.log( this.props.data + " : data ")
         // window.location.reload(false);
@@ -154,6 +207,8 @@ export default class DataBasecomponent extends Component {
                 }
             })
 
+
+            
             // console.log( this.state.user_data_password + "$$$")
             this.props.navigation.navigate("navig_account", {
                 email: this.state.user_data_email,

@@ -6,6 +6,7 @@ import Home from './screens/Home';
 import Loading from './screens/Loading';
 import LogIn from './screens/LogIn';
 import Account from './screens/screen_after_login/Account';
+import EditProfil from './screens/screen_after_login/EditProfil';
 import Maps from './screens/screen_after_login/Maps';
 import Notifications from './screens/screen_after_login/Notifications';
 import ResetPassword from './screens/screen_after_login/ResetPassword';
@@ -115,7 +116,22 @@ const stack_home = createStackNavigator({
       
     },
   },
-
+  navig_EditProfil:
+  {
+    screen: EditProfil,
+    navigationOptions: {
+      title: '',
+      headerStyle: {
+        backgroundColor: '#fff',
+        elevation: 0
+      },
+      headerTitleStyle: {
+        header: null,
+      },
+      headerLeft: null
+      
+    },
+  },
   navig_searsh: {
     screen: Searsh,
     navigationOptions: {

@@ -43,36 +43,15 @@ export default class Home extends Component {
          this.setState({ email: user.email });
       }
       else {
+      console.log("user not found in home 'null'.")
+
+         // this.props.navigation.navigate("stack_log_in")
+     
          // this.setState({ email :fname})
       }
 
 
-      // console.log(firebase.auth().currentUser)
-      // this.props.navigation.navigate("my_account")
-
    }
-
-   // componentWillUnmount = () => {
-   //    // const { navigation } = this.props;
-   //    // const fname = navigation.getParam('user_')
-   //    // // console.log(firebase.auth() + "firebase.auth().currentUser.email")
-
-   //    // console.log(fname +" $$$$ ")
-   //    var user = firebase.auth().currentUser;
-   //    if (user != null) {
-   //       const { email } = firebase.auth().currentUser;
-
-   //       this.setState({ email });}
-   //       else{
-   //          // this.setState({ email :fname})
-   //       }
-
-
-   //    // console.log(firebase.auth().currentUser)
-   //    // this.props.navigation.navigate("my_account")
-
-   // }
-
 
 
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Modal, TextInput, StyleSheet, Alert, Button, ScrollView, TouchableOpacity, View, Text, Image } from 'react-native';
+import { TextInput, StyleSheet, Alert, TouchableOpacity, View, Text, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as firebase from 'firebase';
-import Loader from '../Loader';
+// import Loader from '../Loader';
 // import { Alert, Picker, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 export default class ResetPassword extends Component {
 
@@ -133,7 +133,7 @@ export default class ResetPassword extends Component {
    }
 
 
-//si maandi t erreur f new_pwd_error .. kan aayt l callFuctionPasswordReset
+   //si maandi t erreur f new_pwd_error .. kan aayt l callFuctionPasswordReset
    handleResetPwd = () => {
 
       // console.log(" handleResetPwd!");
@@ -173,6 +173,8 @@ export default class ResetPassword extends Component {
                <TextInput
                   style={current_pwd_error != null && is_click_confirm ? styles.inputErrorStyle : styles.input}
                   value={current_pwd}
+                  secureTextEntry
+                  autoCapitalize="none"
                   placeholder="Current password"
                   onChangeText={current_pwd => {
                      this.setState({ current_pwd })
@@ -193,6 +195,8 @@ export default class ResetPassword extends Component {
                <TextInput
                   style={new_pwd_error != null && is_click_confirm ? styles.inputErrorStyle : styles.input}
                   value={new_pwd}
+                  secureTextEntry
+                  autoCapitalize="none"
                   placeholder="New password"
                   onChangeText={new_pwd => {
                      this.setState({ new_pwd })
@@ -209,6 +213,9 @@ export default class ResetPassword extends Component {
                <TextInput
                   style={confirm_pwd_error != null && is_click_confirm ? styles.inputErrorStyle : styles.input}
                   value={confirm_pwd}
+                  secureTextEntry
+                  autoCapitalize="none"
+
                   placeholder="Confirm new password"
                   onChangeText={confirm_pwd => {
                      this.setState({ confirm_pwd })
