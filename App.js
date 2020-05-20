@@ -3,6 +3,8 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import ForgotPassword from './screens/ForgotPassword';
 import Home from './screens/Home';
+//  import { TouchableHighlight , TouchableOpacity, Text } from 'react-native';
+
 import Loading from './screens/Loading';
 import LogIn from './screens/LogIn';
 import Account from './screens/screen_after_login/Account';
@@ -15,6 +17,7 @@ import SendPassword from './screens/SendPassword';
 import SignUp from './screens/SignUp';
 import SignUpGmail from './screens/SignUpGmail';
 // import Ionicons from "@expo/vector-icons"
+// import headerLeftComponent from './screens/component/headerLeftComponent';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 var firebaseConfig = {
@@ -29,7 +32,7 @@ var firebaseConfig = {
 
 //hadi dertha kan kaytela3 lya wahd l erreur bli rani aandi joj dyal firebase m installin
 // 9albt aaliha o l9it hadi 
-if (!firebase.apps.length) {
+ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
@@ -41,6 +44,25 @@ if (!firebase.apps.length) {
 //   }
 // })
 
+const navig_EditProfil = createStackNavigator({
+EditProfil:
+{
+  screen: EditProfil,
+  navigationOptions: {
+    title: '',
+    headerStyle: {
+      backgroundColor: '#fff',
+      elevation: 0
+    },
+    headerTitleStyle: {
+      header: null,
+    },
+    headerLeft: null
+    
+  },
+},
+
+})
 
 const stack_home = createStackNavigator({
  
@@ -53,14 +75,22 @@ const stack_home = createStackNavigator({
         backgroundColor: '#fff',
         elevation: 0
       },
-      headerTitleStyle: {
-        header: null,
-      },
-      headerLeft: null
+      // headerTitleStyle: {
+      //   header: null,
+      // },
+
+    //   headerLeft: (
+    //     // <TouchableOpacity>
+    //     // <Icon name="bars" color={Colors.red} size={25}/>
+    //     //  </TouchableOpacity>
+    // ),
+     
     }
 
 
   },
+
+
   SignUpGmail: {
     screen: SignUpGmail,
     navigationOptions: {
@@ -112,26 +142,12 @@ const stack_home = createStackNavigator({
       headerTitleStyle: {
         header: null,
       },
-      headerLeft: null
+      headerLeft:   null,
+      
       
     },
   },
-  navig_EditProfil:
-  {
-    screen: EditProfil,
-    navigationOptions: {
-      title: '',
-      headerStyle: {
-        backgroundColor: '#fff',
-        elevation: 0
-      },
-      headerTitleStyle: {
-        header: null,
-      },
-      headerLeft: null
-      
-    },
-  },
+ 
   navig_searsh: {
     screen: Searsh,
     navigationOptions: {
@@ -171,6 +187,22 @@ const stack_home = createStackNavigator({
       },
    
     }
+  },
+  navig_EditProfil  :
+  {
+    screen: EditProfil,
+    navigationOptions: {
+      title: '',
+      headerStyle: {
+        backgroundColor: '#fff',
+        elevation: 0
+      },
+      headerTitleStyle: {
+        header: null,
+      },
+      headerLeft: null
+      
+    },
   },
 })
 
@@ -277,7 +309,7 @@ export default createAppContainer(
     stack_log_in: stack_log_in,
     //  SignUp_:SignUp_,
  
-   
+    // navig_EditProfil : navig_EditProfil,
     // LogIn : LogIn ,
     //Home : Home ,
     stack_home: stack_home,

@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add expo
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add -D @react-native-base
 
 PATH: 
-  C:\Users\Hp\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Hp\bin;C:\Python27;C:\Python27\Scripts;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\PowerShell\6;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\Yarn\bin;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files\nodejs;C:\OpennSSL;C:\Program Files\dotnet;C:\Users\Hp\AppData\Local\Microsoft\WindowsApps;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2019.3.3\bin;C:\Users\Hp\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Hp\AppData\Local\Yarn\bin;C:\Users\Hp\AppData\Roaming\npm;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+  C:\Python27\;C:\Python27\Scripts;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\PowerShell\6\;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\nodejs\;C:\OpennSSL\;C:\Program Files\dotnet\;C:\Users\Hp\AppData\Local\Microsoft\WindowsApps;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2019.3.3\bin;C:\Users\Hp\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Hp\AppData\Local\Yarn\bin;C:\Users\Hp\AppData\Roaming\npm
 
 Yarn version: 
   1.22.0
@@ -14,7 +14,17 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: ENOENT: no such file or directory, lstat 'C:\Users\Hp\my-project\node_modules\@firebase\polyfill\node_modules\core-js\stable\typed-array'
+  Error: https://registry.yarnpkg.com/@react-native-base: Request "https://registry.yarnpkg.com/@react-native-base" returned a 405
+      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66093:18)
+      at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140727:22)
+      at Request.emit (events.js:311:20)
+      at Request.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141699:10)
+      at Request.emit (events.js:311:20)
+      at IncomingMessage.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141621:12)
+      at Object.onceWrapper (events.js:417:28)
+      at IncomingMessage.emit (events.js:323:22)
+      at endReadableNT (_stream_readable.js:1204:12)
+      at processTicksAndRejections (internal/process/task_queues.js:84:21)
 
 npm manifest: 
   {
@@ -22,13 +32,13 @@ npm manifest:
     "scripts": {
       "start": "expo start",
       "android": "expo start --android",
-      "ios": "expo start --ios",
       "web": "expo start --web",
       "eject": "expo eject"
     },
     "dependencies": {
+      "@expo/vector-icons": "^10.2.0",
       "@react-native-community/masked-view": "^0.1.9",
-      "@react-native-firebase/database": "^6.4.0",
+     
       "@types/react-native-vector-icons": "^6.4.5",
       "expo": "~37.0.3",
       "expo-google-app-auth": "^8.1.0",
@@ -39,11 +49,12 @@ npm manifest:
       "react": "~16.9.0",
       "react-dom": "~16.9.0",
       "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.0.tar.gz",
-      "react-native-base": "^1.1.0",
+    
       "react-native-gesture-handler": "^1.6.1",
       "react-native-google-signin": "^2.1.1",
       "react-native-image-crop-picker": "^0.28.0",
       "react-native-image-picker": "^2.3.1",
+      "react-native-modalbox": "^2.0.0",
       "react-native-paper": "^3.7.0",
       "react-native-reanimated": "^1.8.0",
       "react-native-safe-area-context": "^0.7.3",

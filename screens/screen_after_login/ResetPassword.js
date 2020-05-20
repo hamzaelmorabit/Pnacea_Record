@@ -167,7 +167,7 @@ export default class ResetPassword extends Component {
 
             {/* <Text style={{ left: 30, top: 40, fontSize: 30 }}>Update your password</Text> */}
 
-            <View style={{ marginTop: 100 }}>
+            <View style={{marginRight: 40, marginTop: 100 }}>
 
                <Text style={styles.etoilText}>*</Text>
                <TextInput
@@ -251,9 +251,11 @@ export default class ResetPassword extends Component {
                      }}
 
                      style={{
-                        left: 60, marginLeft: 60, fontSize: 18, color: "blue", top: 40
-                     }}><Text>Back to tour profil </Text>
-                     <View style={{ left: 1, borderBottomWidth: 1, borderColor: "blue", width: 115, marginLeft: -2, top: 5 }}></View>
+                        left: 60,
+                          marginLeft: 7,
+                         fontSize: 18, top: 40,  
+                     }}><Text style={{color :"#8461c9"}}>Back to tour profil </Text>
+                     <View style={{ left: 1, borderBottomWidth: 1, borderColor: "#BD7AE3", width: 115, marginLeft: -2, top: 5 }}></View>
                   </TouchableOpacity>
                </View>
 
@@ -268,7 +270,7 @@ export default class ResetPassword extends Component {
 const styles = StyleSheet.create({
    container: {
       // padding: 20,
-
+      alignItems: "center",
       // justifyContent: 'center',
       // alignItems: 'center',
       flex: 1,
@@ -288,7 +290,7 @@ const styles = StyleSheet.create({
    },
    errorTextStyle: {
       color: "#E9446A",
-      left: 37,
+      left:-75,
       marginTop: -10
    },
    etoilText: {

@@ -12,7 +12,7 @@ YellowBox.ignoreWarnings(['Setting a timer']);
 
 export default class EditProfil extends Component {
 
- 
+
    constructor(props) {
       super(props);
 
@@ -20,20 +20,20 @@ export default class EditProfil extends Component {
 
 
    state = {
-      loading: false,
-      email_user: "",
+      // loading: false,
+
       first_name: "",
       last_name: "",
       age: "",
       phone_number: "",
       checked: 'male',
       selectedValue: 'A+',
-      
+
       first_name_error: null,
       last_name_error: null,
       error_msg_age: null,
       error_msg_phone: null,
-      email_user_connect_gmail: '',
+
       is_click_confirm: null,//lakherin bayenin hadi dertha hyt anbghy n afficher les erreurs façon dyanmique
       //mnin l user aydkhal ila mkontsh dayer hadi ay t aficha l messag leta7tf l code  atban mzn 
 
@@ -42,17 +42,32 @@ export default class EditProfil extends Component {
 
 
    componentDidMount = async () => {
-      console.log("ComponentWillUnmount --- SignUpGmail")
-    
+
+
+      console.log(" ************************* ComponentWillUnmount --- EditProfil ****************** \n")
+      
+       console.log("componentDidMount of Account")
+      var user = firebase.auth().currentUser;
+
+      if (user != null) {
+         // const { email } = firebase.auth().currentUser;
+
+         this.setState({ email: user.email });
+         console.log("this.state.email" + user.email)
+
+
+         this.setState({ yearsNow: new Date().getFullYear() });
+      } else {
+         console.log(" not user in Edit profil")
+
+        ///this.props.navigation.navigate("stack_log_in")
+      }
+
+
    }
 
 
-   //bash katkon aandi formulair mzyana kan nji  l hena sign up
-   handleSignUp = async () => {
-    
 
-
-   }
 
 
    handleChangeText = (...args) => {
@@ -133,6 +148,9 @@ export default class EditProfil extends Component {
       } = this.state;
       this.setState({ is_click_confirm: true })
 
+      // this.props.navigation.navigate("navig_account") 
+
+
       if (first_name == "") this.state.first_name_error = 'Please fill this field'
       if (last_name == "") this.state.last_name_error = 'Please fill this field'
       if (age == "") this.state.error_msg_age = 'Please fill this field'
@@ -142,49 +160,43 @@ export default class EditProfil extends Component {
          this.state.first_name_error == null && this.state.last_name_error == null
          && this.state.error_msg_age == null && this.state.error_msg_phone == null
       ) {
-         this.setState({loading : true})
+         this.setState({ loading: true })
          console.log("correct Info ")
 
          //kandir l mise a jour l insert_data hyt n9edar nmshy l handleSignUp o lcreation dyal l user 
          //tkon failed o naawd ndkhal l hena donc aykhes nej3ha true bash n inseré new user 
          this.state._insert_data = "true"
 
-         setTimeout(() => { this.handleSignUp() }, 2000)
+         setTimeout(() => {   this.props.navigation.navigate("Home") }, 2000)
+
+      }else{
+         this.state._insert_data = null
       }
 
    }
 
 
 
-
    render() {
-      // const { navigation } = this.props;
-      // const email_user_ = navigation.getParam('current_user')
-      const { navigation } = this.props;
-      const email_user_ = navigation.getParam('email_user')
-      const firstName_ = navigation.getParam('firstName')
-      const lastName_ = navigation.getParam('lastName')
-      const phoneNumber_ = navigation.getParam('phoneNumber')
-      const age__ = navigation.getParam('age')
-      const gendre_ = navigation.getParam('gendre')
-      const blood_type_= navigation.getParam('blood_type')
 
       const {
-         selectedValue, _insert_data, error_msg_age, checked,age , email_user , age_, is_click_confirm, first_name_error, last_name_error,
-         first_name, last_name, phone_number, error_msg_phone
+         // _delet_data,
+         selectedValue, _insert_data, error_msg_age, checked, age, is_click_confirm, first_name_error, last_name_error,
+         first_name, last_name, phone_number,email
+     , error_msg_phone
       } = this.state;
 
       return (
          <View style={styles.container}>
             <Text style={styles.greeting}></Text>
-      
-    
-          
-            {(email_user_ != "") ? (<DataBasecomponent
-               navigation={this.props.navigation} data={["get_dataEdit", email_user_]} />) : (<Text>not executed</Text>
+            {(this.state.email != "") ? (<DataBasecomponent
+               navigation={this.props.navigation} data={["get_dataEdit", email]} />) : (<Text>not executed</Text>
                )}
-        
+            {/* <Loader
+               loading={this.state.loading} /> */}
             <ScrollView contentContainerStyle={styles.contentContainer}>
+
+     
 
                {/* // First Name */}
                <View style={{ marginTop: 10 }}>
@@ -192,24 +204,24 @@ export default class EditProfil extends Component {
                   <TextInput
                      style={first_name_error != null && is_click_confirm ? styles.inputErrorStyle : styles.input}
                      value={first_name}
-                     placeholder={firstName_}
+                     placeholder="First Name"
                      onChangeText={first_name => {
                         this.setState({ first_name })
                         this.handleChangeText(first_name, 'first_name')
                      }} ></TextInput>
                </View>
                {first_name_error != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>
-                  {first_name_error}</Text>) : (null)}
+                  {first_name_error}</Text>) : (<Text style={styles.errorTextStyle}></Text>)}
 
 
                {/* // last name */}
                <View style={{ marginTop: 10 }}>
-                  {/* <Text style={styles.inputTitle}>email_user Address </Text> */}
+                  {/* <Text style={styles.inputTitle}>Email Address </Text> */}
                   <Text style={styles.etoilText}>*</Text>
                   <TextInput
                      style={last_name_error != null && is_click_confirm ? styles.inputErrorStyle : styles.input}
                      // autoCapitalize="none"
-                     placeholder={lastName_}
+                     placeholder="Last sName"
                      onChangeText={last_name => {
                         this.setState({ last_name })
                         this.handleChangeText(last_name, 'last_name')
@@ -217,25 +229,25 @@ export default class EditProfil extends Component {
                      value={last_name}
                   ></TextInput>
                </View>
-               {last_name_error != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{last_name_error}</Text>) : (null)}
+               {last_name_error != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{last_name_error}</Text>) : (<Text style={styles.errorTextStyle}></Text>)}
 
                {/* // phone number */}
                <View style={{ marginTop: 10 }}>
                   <Text style={styles.etoilText}></Text>
-                  {/* <Text style={styles.inputTitle}>email_user Address </Text> */}
+                  {/* <Text style={styles.inputTitle}>Email Address </Text> */}
                   <TextInput
                      style={error_msg_phone != null && is_click_confirm ? styles.inputErrorStyle : styles.input}
                      keyboardType="numeric"
-                     placeholder={phoneNumber_}
+                     placeholder="Phone number"
                      onChangeText={(phone_number) => {
                         this.setState({ phone_number })
                         this.handleChangeText(phone_number, 'phone')
                      }}
-                     // onChangeText={email_user => { this.setState({ email_user }) }}
+                     // onChangeText={email => { this.setState({ email }) }}
                      value={phone_number}
                   ></TextInput>
                </View>
-               {error_msg_phone != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{error_msg_phone}</Text>) : (null)}
+               {error_msg_phone != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{error_msg_phone}</Text>) : (<Text style={styles.errorTextStyle}></Text>)}
 
 
                {/* // age  */}
@@ -249,22 +261,23 @@ export default class EditProfil extends Component {
                         this.handleChangeText(age, 'age')
                      }}
                      autoCapitalize="none"
-                     placeholder={age__}
+                     placeholder="Age"
                      keyboardType="numeric"
                      // onChangeText={password => { this.setState({ password }) }}
                      value={age}
                   ></TextInput>
 
                </View>
-               {error_msg_age != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{error_msg_age}</Text>) : (null)}
+               {error_msg_age != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{error_msg_age}</Text>) : (<Text style={styles.errorTextStyle}></Text>)}
 
 
                {/* // RadioButton */}
                <View style={{
                   justifyContent: 'center',
-                  alignItems: 'center', marginTop: 30, flexDirection: 'row'
+                  alignItems: 'center',
+                   marginTop: 30, flexDirection: 'row'
                }}>
-                  <Text style={{ marginRight: 40 }}>Gender</Text>
+                  <Text style={{ marginRight: 25 }}>Gender</Text>
                   <RadioButton
                      // style={{ backgroundColor: this.state.checked ? 'red' : 'white' }}
                      color="#6979F8"
@@ -293,18 +306,22 @@ export default class EditProfil extends Component {
                   <Text style={{ marginRight: 17 }}>Blood Type</Text>
 
                   <Picker
-                     selectedValue={blood_type_}
-                     style={{ height: 50, marginRight: 120, width: 95 }}
+                     selectedValue={this.state.selectedValue}
+                     style={{
+                        // alignItems: "22",
+                         height: 50, 
+                     marginRight: 93,
+                      width: 95 }}
                      onValueChange={(itemValue) => { this.setState({ selectedValue: itemValue }) }}
                   >
                      <Picker.Item label="A+" value="A+" />
                      <Picker.Item label="B+" value="B+" />
                      <Picker.Item label="O+" value="O+" />
-                     <Picker.Item label="AB+" value="B+" />
+                     <Picker.Item label="AB+" value="AB+" />
                      <Picker.Item label="A-" value="A-" />
                      <Picker.Item label="B-" value="B-" />
                      <Picker.Item label="O-" value="O-" />
-                     <Picker.Item label="AB-" value="B-" />
+                     <Picker.Item label="AB-" value="AB-" />
                   </Picker>
                </View>
 
@@ -335,14 +352,22 @@ export default class EditProfil extends Component {
             li hya tableau o kandir f lawl dyaleha type wash l insert ola delet bash nlshy l component
             dyali n tchecki type bash naarf wash an inser ola an delet */}
             {(_insert_data != null) ? (<DataBasecomponent
-               data={["insert", email_user_, "true", first_name, last_name, phone_number
+               data={["insert_dataEdit", email, "def", first_name, last_name, phone_number
                   , age, checked, selectedValue]} />) : (null)}
+
+            {/* {si l user deja kan kan supprimih men l base donn o kan passi ghyr gmail o howa
+             f  kay9alb aalih b gmail  o kaysprimih} */}
+            {/* {(_delet_data != null) ? (<DataBasecomponent data={["delet", email, password]} />) : (null)} */}
 
          </View>
 
       );
 
    }
+
+
+
+
 }
 
 
@@ -351,7 +376,7 @@ export default class EditProfil extends Component {
 const styles = StyleSheet.create({
 
    container: {
-
+      alignItems: "center",
       flex: 1,
       backgroundColor: 'white'
    },
@@ -426,8 +451,8 @@ const styles = StyleSheet.create({
       marginVertical: 10,
       borderBottomWidth: 1,
       borderBottomColor: '#CFCFCF',
-
-      left: 25,
+      alignItems: "center",
+      // left: 25,
    },
 
    inputErrorStyle: {
@@ -439,8 +464,8 @@ const styles = StyleSheet.create({
       marginVertical: 10,
       borderBottomWidth: 1,
       borderBottomColor: 'red',
-
-      left: 25,
+      alignItems: "center",
+      // left: 25,
    },
 
    inputAge: {
@@ -453,8 +478,8 @@ const styles = StyleSheet.create({
       marginVertical: 10,
       borderBottomWidth: 1,
       borderBottomColor: '#CFCFCF',
-
-      left: 25,
+      alignItems: "center",
+      // left: 25,
    },
 
    inputAgeError: {
@@ -467,8 +492,8 @@ const styles = StyleSheet.create({
       marginVertical: 10,
       borderBottomWidth: 1,
       borderBottomColor: 'red',
-
-      left: 25,
+      alignItems: "center",
+      // left: 25,
    },
 
    buttom: {

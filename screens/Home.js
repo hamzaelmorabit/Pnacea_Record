@@ -69,7 +69,9 @@ export default class Home extends Component {
             {/* <DataBaseComponent
                data={["get_user_info", this.state.email]} navigation={this.props.navigation}
             /> */}
-            <Text>{this.state.email}</Text>
+            <Text>
+            {/* {this.state.email} */}
+            </Text>
             <TouchableOpacity onPress={() => {
                this.signOutUser()
             }} >

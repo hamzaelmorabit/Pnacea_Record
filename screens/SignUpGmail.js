@@ -356,7 +356,7 @@ export default class SignUpGmail extends Component {
 const styles = StyleSheet.create({
 
    container: {
-
+      alignItems:'center',
       flex: 1,
       backgroundColor: 'white'
    },

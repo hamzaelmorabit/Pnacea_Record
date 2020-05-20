@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import * as firebase from 'firebase';
-
+// import 'firebase/auth';
+// import 'firebase/database';
 export default class DataBasecomponent extends Component {
     // constructor(props) {
     //     super(props);
@@ -48,107 +49,87 @@ export default class DataBasecomponent extends Component {
         // console.log(typeof (this.props.data) + " typeOf data")
         // if ("undefined" == typeof (this.props.data)) return;
         if (this.props.data[0] == "get_data") {
-            console.log(' getDataOfUSer')
-            try { await this.getDataOfUSer(); }
-            catch (error) { console.log('error getDataOfUSer') }
-        }
-        else {
-            if (this.props.data[0] == "insert") {
-                console.log('i appel function INSERTED in DataBase!');
-                this.addUserInDataBase()
-                // console.log(this.props.data[1] + "!")
-            } else if (this.props.data[0] == "delet") {
-                console.log('Deleted  DataBase !! ')
-                // if(this.props.data[0] == "The email addre")
-                //kan pass lih gmail bash ysepprimi lya l user selon email et password
-                // this.deletUserInDataBase(this.props.data[1], this.props.data[2])
-            } else if(this.props.data[0] == "get_data_for_gmail"){
-                 console.log("get_data_for_gmail")
-                // // global.errorReset = "ooo";
-                this.getDataforUSerGmail()
-            }else if (this.props.data[0] == "get_data2") {
-                // console.log(' getDataOfUSer2')
-                // try { await this.getDataOfUSerEE(); }
-                // catch (error) { console.log('error getDataOfUSer') }
-            }else if (this.props.data[0] == "get_dataEdit") {
-           console.log(' getDataOfUSerEdit')
-                // try { await this.getDataOfUSerEE(); }
-                // catch (error) { console.log('error getDataOfUSer') }
-                this.getDataOfUSerEdit();
+            try {
+                console.log('call getDataOfUSer  DataBase  '),
+                    await this.getDataOfUSer();
             }
-            
-            else{}
+            catch (error) { console.log('error getDataOfUSer') }
+
         }
+
+        else if (this.props.data[0] == "insert") {
+            try {
+                console.log('i appel function INSERTED in DataBase!');
+                await this.addUserInDataBase()
+            }
+            catch (error) { console.log('error n INSERTED in DataBase ') }
+        }
+
+        else if (this.props.data[0] == "get_data_for_gmail") {
+            console.log(" call get_data_for_gmail")
+            // // global.errorReset = "ooo";
+            this.getDataforUSerGmail()
+        }
+        else if (this.props.data[0] == "get_dataEdit") {
+
+            try {
+                console.log('call getDataOfUSerEdit  DataBase  ')
+                await this.getDataOfUSerEdit();
+            }
+            catch (error) { console.log('error getDataOfUSer') }
+
+        } else if (this.props.data[0] == "insert_dataEdit") {
+            console.log('call insert_dataEdit  DataBase  ')
+            this.addUserEdit()
+            // if(this.props.data[0] == "The email addre")
+            //kan pass lih gmail bash ysepprimi lya l user selon email et password
+            // this.deletUserInDataBase(this.props.data[1], this.props.data[2])
+        } else { console.log('Else !!! ') }
+
+        // else if (this.props.data[0] == "delet") {
+        //     console.log(' call Deleted  DataBase !! ')
+
+        //     // this.deletUserInDataBase(this.props.data[1], this.props.data[2])
+        // } 
+
 
     }
 
-    getDataforUSerGmail =   async () => {
-      
-         firebase.database().ref('users').on('value', data => {
+    getDataforUSerGmail = async () => {
+
+        firebase.database().ref('users').on('value', data => {
             data.forEach((item) => {
                 // console.log(this.props.data[1])
                 if (item.val().email == this.props.data[1]) {
                     console.log("Existe ")
-                    this.state.user_data_password = item.val().password 
-                 
+                    this.state.user_data_password = item.val().password
+
                 }
             })
-            console.log(this.state.user_data_password +" : password")
+            console.log(this.state.user_data_password + " : password")
             // console.log( this.state.user_data_password + "$$$")
             this.props.navigation.navigate("log_in", {
-                
+
                 password: this.state.user_data_password,
-               
+
             })
         })
     }
 
-
-    // getDataOfUSerEE = async () => {
-       
-    //     await firebase.database().ref('users').on('value', data => {
-    //         data.forEach((item) => {
-    //             // console.log(this.props.data[1])
-    //             if (item.val().email == this.props.data[1]) {
-    //                 console.log(item.val().id + "The id  of element i found ")
-    //                this.state.user_data_password = item.val().password
-    //                console.log(item.val().password + " password") 
-    //                this.props.navigation.navigate("SignUpGmail", {
-    //                 email: this.state.user_data_email,
-    //                 password: "true",
-                   
-    //             })
-                  
-    //             }
-    //         })
-
-    //         this.props.navigation.navigate("SignUpGmail", {
-    //             email: this.state.user_data_email,
-    //             password: "false",
-               
-    //         })
-    //     })
-    // }
-
-
-
-
-
-    
     getDataOfUSerEdit = async () => {
         // console.log( this.props.data + " : data ")
         // window.location.reload(false);
         // const {user_data_firstName} = this.state ; 
-        //  console.log(this.props.data)
+        console.log(this.props.data[1] + " data1 ")
         // this.setState({ data: 'kkkkkkkkk' }) 
         await firebase.database().ref('users').on('value', data => {
             data.forEach((item) => {
                 // console.log(this.props.data[1])
                 if (item.val().email == this.props.data[1]) {
-
+                    console.log(item.val().email + "tem.val().email ")
                     console.log(item.val().id + "The id  of element i found ")
                     this.state.user_data_email = item.val().email
-                    this.state.userForgmail = item.val().userForgmail 
+                    this.state.userForgmail = item.val().userForgmail
                     this.state.user_data_firstName = item.val().firstName
                     this.state.user_data_lastName = item.val().lastName
                     this.state.user_data_phoneNumber = item.val().phoneNumber
@@ -156,12 +137,12 @@ export default class DataBasecomponent extends Component {
                     this.state.user_data_Gendre = item.val().gendre
                     this.state.user_data_blood_type = item.val().bloodType
                     this.state.user_data_id = item.val().id
-                  
+
                 }
             })
 
 
-        console.log( 'this.state.user_data_firstName' +  this.state.user_data_firstName)
+
             // console.log( this.state.user_data_password + "$$$")
             this.props.navigation.navigate("navig_EditProfil", {
                 email: this.state.user_data_email,
@@ -178,8 +159,42 @@ export default class DataBasecomponent extends Component {
     }
 
 
+    addUserEdit = async () => {
+        // console.log('INSERTED !');
+        await firebase.database().ref('users').on('value', data => {
+            data.forEach((item) => {
 
+                if (item.val().email == this.props.data[1]) {
+                    console.log("users/user_" + item.val().id)
 
+                    var path = "users/user_" + item.val().id
+                    // this.props.data[1] = "user in base donne"
+                    setTimeout(() => {
+                        firebase.database().ref(path).set({
+                            email: item.val().email,
+                            userForgmail: item.val().userForgmail,
+                            firstName: this.props.data[3],
+                            lastName: this.props.data[4],
+                            phoneNumber: this.props.data[5],
+                            age: this.props.data[6],
+                            gendre: this.props.data[7],
+                            bloodType: this.props.data[8],
+                            id: item.val().id,
+                        }
+                        ).then(() => {
+
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+
+                    }, 2000);
+                    return;
+                }
+            })
+        }
+        )
+
+    }
 
 
     getDataOfUSer = async () => {
@@ -195,7 +210,7 @@ export default class DataBasecomponent extends Component {
 
                     console.log(item.val().id + "The id  of element i found ")
                     this.state.user_data_email = item.val().email
-                    this.state.userForgmail = item.val().userForgmail 
+                    this.state.userForgmail = item.val().userForgmail
                     this.state.user_data_firstName = item.val().firstName
                     this.state.user_data_lastName = item.val().lastName
                     this.state.user_data_phoneNumber = item.val().phoneNumber
@@ -203,12 +218,12 @@ export default class DataBasecomponent extends Component {
                     this.state.user_data_Gendre = item.val().gendre
                     this.state.user_data_blood_type = item.val().bloodType
                     this.state.user_data_id = item.val().id
-                  
+
                 }
             })
 
 
-            
+
             // console.log( this.state.user_data_password + "$$$")
             this.props.navigation.navigate("navig_account", {
                 email: this.state.user_data_email,
@@ -225,26 +240,32 @@ export default class DataBasecomponent extends Component {
     }
 
 
-
     addUserInDataBase = () => {
         // console.log('INSERTED !');
+        var exist = false;
         firebase.database().ref('users').on('value', data => {
             data.forEach((item) => {
 
-                if (item.val().email == this.props.data[1]) {
+                if (item.val().email == this.props.data[1].toLowerCase()) {
+                    console.log("Existe user  !!! ")
                     this.props.data[1] = "user in base donne"
+                    exist = true
                     return;
                 }
             })
         }
         )
-        if (this.props.data[1] != "user in base donne") {
+
+        if (!exist) {
             console.log("success insert ")
-            var id_ = parseInt(Math.random() * 100) +parseInt(Math.random() * 50)+ parseInt(Math.random() * 50),
+            var id_ = parseInt(Math.random() * 100) + parseInt(Math.random() * 50) + parseInt(Math.random() * 50),
                 path = "users/user_" + id_
             setTimeout(() => {
+                // console.log(this.props.data[1]);
+                // console.log(this.props.data[1].toLowerCase());
                 firebase.database().ref(path).set({
-                    email: this.props.data[1],
+
+                    email: this.props.data[1].toLowerCase(),
                     userForgmail: this.props.data[2],
                     firstName: this.props.data[3],
                     lastName: this.props.data[4],
@@ -293,6 +314,49 @@ export default class DataBasecomponent extends Component {
         );
     }
 }
+
+    // getDataOfUSerEdit = async () => {
+    //     // console.log( this.props.data + " : data ")
+    //     // window.location.reload(false);
+    //     // const {user_data_firstName} = this.state ; 
+    //     //  console.log(this.props.data)
+    //     // this.setState({ data: 'kkkkkkkkk' }) 
+    //     await firebase.database().ref('users').on('value', data => {
+    //         data.forEach((item) => {
+    //             // console.log(this.props.data[1])
+    //             if (item.val().email == this.props.data[1]) {
+
+    //                 console.log(item.val().id + "The id  of element i found ")
+    //                 this.state.user_data_email = item.val().email
+    //                 this.state.userForgmail = item.val().userForgmail
+    //                 this.state.user_data_firstName = item.val().firstName
+    //                 this.state.user_data_lastName = item.val().lastName
+    //                 this.state.user_data_phoneNumber = item.val().phoneNumber
+    //                 this.state.user_data_age = item.val().age
+    //                 this.state.user_data_Gendre = item.val().gendre
+    //                 this.state.user_data_blood_type = item.val().bloodType
+    //                 this.state.user_data_id = item.val().id
+
+    //             }
+    //         })
+
+
+
+    //          console.log(    this.state.user_data_id + "$$$")
+    //         this.props.navigation.navigate("navig_EditProfil", {
+    //             email: this.state.user_data_email,
+    //             userForgmail: this.state.userForgmail,
+    //             firstName: this.state.user_data_firstName,
+    //             lastName: this.state.user_data_lastName,
+    //             phoneNumber: this.state.user_data_phoneNumber,
+    //             age: this.state.user_data_age,
+    //             gendre: this.state.user_data_Gendre,
+    //             blood_type: this.state.user_data_blood_type,
+    //             id: this.state.user_data_id
+    //         })
+    //     })
+    // }
+
 
 
 

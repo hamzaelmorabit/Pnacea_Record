@@ -58,10 +58,14 @@ sign_in_with_gmail = async () => {
                         .catch((error) => {
                             if (error.code == 'auth/wrong-password') {
                               console.log("password error")
+                             
                               const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken, result.accessToken);
                                firebase.auth().signInAndRetrieveDataWithCredential(credential).then(function(result){
                                     console.log("error result" +result);
                                  });
+                                 // firebase.auth().signInAndRetrieveDataWithCredential(credential).then(function(result){
+                                 //    console.log("error result" +result);
+                                 // });
                            }else{
                               //user not found 
                               // console.log("idToken ->" + result.idToken)
@@ -282,7 +286,7 @@ sign_in_with_gmail = async () => {
                {/* ila l user werak aala forgot pws kan orientih l screen dyal "ForgotPassword" */}
                <TouchableOpacity onPress={() => { this.props.navigation.navigate("ForgotPassword")
                }}>
-                  <Text style={{ left: 170 }}>Forgot the password ?</Text>
+                  <Text style={{ left: 150 }}>Forgot the password ?</Text>
                </TouchableOpacity>
 
             </View>
@@ -292,12 +296,12 @@ sign_in_with_gmail = async () => {
                onPress={() => { this.handle_sign_in() }}
                style={styles.buttom}>
 
-               <LinearGradient start={{ x: 0, y: 0 }}
+               <LinearGradient start={{ x: 0, y: 0 }} 
                   end={{ x: 1, y: 1 }}
                   locations={[0.0, 100]}
                   colors={['#8461c9', '#BD7AE3']}
                   style={styles.gradient}>
-                  <Text style={{ color: "#fff" }}>Sign Iin</Text>
+                  <Text style={{ color: "#fff" }}>Sign in</Text>
                </LinearGradient>
 
             </TouchableOpacity>
@@ -326,13 +330,18 @@ sign_in_with_gmail = async () => {
                <Text style={{ top: 150, 
                // top: 150, 
                top: 150, 
-               left: 60 }}>you don't have an account ?</Text>
+               left:- 30
+
+               // alignItems: 'center'
+               }}>you don't have an account ?</Text>
 
                <TouchableOpacity onPress={() => { this.props.navigation.navigate("SignUp") }}
                   style={{ padding: 5,
-                  //  top: 125,
+                  //  top: 125, 
+                  //  alignItems: 'center',
                    top: 125, 
-                    left: 233, fontWeight: "bold" }}
+                   left: 150,
+                     fontWeight: "bold" }}
                   title="Sign up">
 
                   <Text style={{ fontWeight: "bold" }}>Sign Up</Text>
@@ -350,16 +359,17 @@ const styles = StyleSheet.create({
    container: {
       flex: 1,
       backgroundColor: 'white',
-
+      alignItems: "center",
+      // justifyContent: "center",
    },
 
    error_email_style: {
-      left: 38,
+      left:-(45),
       top: 105,
       color: 'red',
    },
    error_pwd_style: {
-      left: 38,
+      left:-(75),
       top: 140,
       color: 'red',
    },
@@ -373,8 +383,8 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1,
       borderBottomColor: 'red',
       marginTop: 15,
-      left: 25,
-
+      // left: 25,
+      alignItems: 'center',
    },
    textErreur: {
       position: 'absolute',
@@ -383,7 +393,8 @@ const styles = StyleSheet.create({
       // fontFamily: 'System',
       // width: 153,
       // height: 18,
-      left: 80,
+         left:- 90,
+      // alignItems: 'center',
       // top: 385,
 
       top: 190,
@@ -391,7 +402,8 @@ const styles = StyleSheet.create({
    }, ImageIconStyleError: {
       height: 25,
       width: 20,
-      left: 275,
+      // left: 275,
+      left:110,
       // top: -22
       top: 187,
       bottom: 140,
@@ -450,9 +462,10 @@ const styles = StyleSheet.create({
       marginVertical: 10,
       borderBottomWidth: 1,
       borderBottomColor: '#CFCFCF',
-      left: 25,
-      justifyContent: 'center',
+    
       alignItems: 'center',
+      justifyContent: 'center',
+      // alignItems: 'center',
       marginTop: 15
    },
    greeting: {

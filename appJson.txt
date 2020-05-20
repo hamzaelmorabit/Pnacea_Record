@@ -1,0 +1,57 @@
+//
+ {
+//   "expo": {
+//     "name": "HelloWorld",
+//     "slug": "my-project",
+//     "sdkVersion": "37.0.0",
+//     "platforms": [
+//       "ios",
+//       "android",
+//       "web"
+//     ],
+//     "version": "1.0.0",
+//     "orientation": "portrait",
+//     "icon": "./assets/icon.png",
+//     "splash": {
+//       "image": "./assets/splash.png",
+//       "resizeMode": "contain",
+//       "backgroundColor": "#ffffff"
+//     },
+//     "updates": {
+//       "fallbackToCacheTimeout": 0
+//     },
+//     "assetBundlePatterns": [
+//       "**/*"
+//     ],
+//     "ios": {
+//       "supportsTablet": true
+//     },
+    
+//     "android": {
+//       "package": "com.yourcompany.yourappReactNativeProject"
+//   }
+//   }
+
+//  
+pckage json
+
+ "@react-native-firebase/database": "^6.4.0",
+
+  "react-native-base": "^1.1.0",
+    // "ios": "expo start --ios",
+
+node_modules/react-native/Libraries/Core/Timers/JSTimers.js file.
+const MAX_TIMER_DURATION_MS = 10000 * 1000;
+ //const MAX_TIMER_DURATION_MS = 60 * 1000;
+
+
+
+
+
+has been ignored
+
+
+
+yarn add -D @bam.tech/react-native-make@1.0.2
+
+

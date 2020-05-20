@@ -68,7 +68,7 @@ export default class Account extends Component {
 
          this.setState({ yearsNow: new Date().getFullYear() });
       } else {
-         // this.props.navigation.navigate("stack_log_in")
+         this.props.navigation.navigate("stack_log_in")
       }
 
    }
@@ -82,6 +82,7 @@ export default class Account extends Component {
       const lastName = navigation.getParam('lastName')
       const phoneNumber = navigation.getParam('phoneNumber')
       const age = navigation.getParam('age')
+      const id = navigation.getParam('id')
       const gendre = navigation.getParam('gendre')
       const blood_type = navigation.getParam('blood_type')
 
@@ -91,21 +92,22 @@ export default class Account extends Component {
 
 
          <View style={styles.container1}>
-            {/*$ {(this.state.email == "") ? <Text onPress={() => { this.compon() }}>{this.state.email} + "yehssh"</Text> : null}
-            <Text>{email}Email !!</Text> */}
+
+            {/* <Text>{email}Email !!</Text> */}
 
             {/* kanaayt l base donne bash nakhed les info dyal user si ila kan aandi l user (email != null)*/}
             {(this.state.email != "") ? (<DataBasecomponent
                navigation={this.props.navigation} data={["get_data", email]} />) : (<Text>not executed</Text>
                )}
 
-            <View style={{ bottom: 80 }}>
+            <View style={{ bottom: 90 }}>
                <TouchableOpacity style={styles.buttom2}
-                 onPress={() => {console.log('kkkkk')
-               //   this.props.navigation.navigate("navig_EditProfil",    {email_user : this.state.email})
-                     }} 
-               
-                >
+                  onPress={() => {
+                     console.log('navig_EditProfil  ')
+                     //this.props.navigation.navigate("navig_EditProfil")
+                  }}
+
+               >
                   <LinearGradient start={{ x: 0, y: 0 }}
                      end={{ x: 1, y: 1 }}
                      locations={[0.0, 100]}
@@ -123,48 +125,48 @@ export default class Account extends Component {
                </TouchableOpacity>
 
             </View>
-            <View style={{ top: 70, }}>
+            <View style={{ top: 60, }}>
                <View style={{ top: 30, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>First Name    </Text>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 40 }}>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>First Name    </Text>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 40 }}>
                      {firstName}
 
                   </Text>
                </View>
                <View style={{ top: 60, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Last Name    </Text>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 40 }}>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Last Name    </Text>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 40 }}>
                      {lastName}
                   </Text>
                </View>
                <View style={{ top: 90, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Phone  </Text>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 77 }}>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Phone  </Text>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 77 }}>
                      {phoneNumber}
                   </Text>
                </View>
                <View style={{ top: 120, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Birthday  </Text>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 65 }}>January 1,
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Birthday  </Text>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 65 }}>January 1,
                    {this.state.yearsNow}
                      {/* {new Date().toLocaleString()} */}
                   </Text>
                </View>
                <View style={{ top: 150, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Gendre  </Text>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 71 }}>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Gendre  </Text>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 71 }}>
                      {gendre}
                   </Text>
                </View>
                <View style={{ top: 180, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Blood Type </Text>
-                  <Text style={{ fontSize: 15, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 50 }}>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Blood Type </Text>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 50 }}>
                      {blood_type}
                   </Text>
                </View>
             </View>
 
-            <View style={{ bottom: 50, paddingRight: 11, paddingLeft: 2, flexDirection: 'row' }}>
+            <View style={{ bottom: 60, paddingRight: 11, paddingLeft: 2, flexDirection: 'row' }}>
                <TouchableOpacity style={styles.buttom22}
 
                   onPress={() => {
@@ -202,15 +204,15 @@ export default class Account extends Component {
                </View>
             </View>
 
-            <View style={{ bottom: 195 }}>
+            <View style={{ bottom: 207 }}>
 
 
-            {/* Tab_bar had l component howa dak TabBar li le7at ->  katkhalini ndir naviguatin bin les  screen 
+               {/* Tab_bar had l component howa dak TabBar li le7at ->  katkhalini ndir naviguatin bin les  screen 
              name :  bash n colorer text o icon si ila kont mnaviguer aalihom
              line_position : position dyal dk line li leta7t 
              navigation : hya li katkhalini ndir navigation 
             */}
-          
+
                <Tab_bar
 
                   navigation={this.props.navigation} line_position={145} name="account" />
