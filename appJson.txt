@@ -55,3 +55,7 @@ has been ignored
 yarn add -D @bam.tech/react-native-make@1.0.2
 
 
+
+
+hello this    why v
+    			name   ##donc eveone donc 

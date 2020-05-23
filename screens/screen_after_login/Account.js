@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Tab_bar from './../component/Tab_bar'
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
 import DataBasecomponent from '../DataBase/DataBaseComponent'
-
+import test2_Base from './test2_Base';
 
 export default class Account extends Component {
    constructor(props) {
@@ -18,7 +18,17 @@ export default class Account extends Component {
    state = {
       email: "",
       // photoUrl: "",
-      yearsNow: ""
+      yearsNow: "",
+     
+
+      userForgmail: '',
+      firstName: '',
+    lastName: '',
+      phoneNumber: '',
+      age: '',
+      Gendre: '',
+      blood_type: '',
+     id: '',
    };
 
 
@@ -56,7 +66,7 @@ export default class Account extends Component {
    //kan nakhed l user l eandi halin o kanhato f email 
    //ila maandish kanreja3 l login ()
    componentDidMount = () => {
-      console.log("componentDidMount of Account")
+      console.log("*** ComponentDidUnmount --- Account ***** \n")
       var user = firebase.auth().currentUser;
 
       if (user != null) {
@@ -64,8 +74,15 @@ export default class Account extends Component {
 
          this.setState({ email: user.email });
          console.log("this.state.email" + user.email)
-
-
+         let data =   test2_Base.getDataOfUSer( user.email ) ;
+         console.log(data + "!:!:!")
+         this.setState({ firstName :data[0] });
+         this.setState({ lastName :data[1] });
+         this.setState({ age :data[3] });
+         this.setState({ phoneNumber :data[2] });
+         this.setState({ blood_type :data[5] });
+         this.setState({ gendre :data[4] });
+         
          this.setState({ yearsNow: new Date().getFullYear() });
       } else {
          this.props.navigation.navigate("stack_log_in")
@@ -77,17 +94,17 @@ export default class Account extends Component {
 
    render() {
 
-      const { navigation } = this.props;
-      const firstName = navigation.getParam('firstName')
-      const lastName = navigation.getParam('lastName')
-      const phoneNumber = navigation.getParam('phoneNumber')
-      const age = navigation.getParam('age')
-      const id = navigation.getParam('id')
-      const gendre = navigation.getParam('gendre')
-      const blood_type = navigation.getParam('blood_type')
+      // const { navigation } = this.props;
+      // const firstName = navigation.getParam('firstName')
+      // const lastName = navigation.getParam('lastName')
+      // const phoneNumber = navigation.getParam('phoneNumber')
+      // const age = navigation.getParam('age')
+      // const id = navigation.getParam('id')
+      // const gendre = navigation.getParam('gendre')
+      // const blood_type = navigation.getParam('blood_type')
 
 
-      const { email } = this.state
+      const {blood_type , firstName , lastName , phoneNumber , age , gendre ,  email } = this.state
       return (
 
 
@@ -96,15 +113,16 @@ export default class Account extends Component {
             {/* <Text>{email}Email !!</Text> */}
 
             {/* kanaayt l base donne bash nakhed les info dyal user si ila kan aandi l user (email != null)*/}
-            {(this.state.email != "") ? (<DataBasecomponent
+            {/* {(this.state.email != "") ? (<DataBasecomponent
                navigation={this.props.navigation} data={["get_data", email]} />) : (<Text>not executed</Text>
-               )}
+               )} */}
 
             <View style={{ bottom: 90 }}>
                <TouchableOpacity style={styles.buttom2}
                   onPress={() => {
                      console.log('navig_EditProfil  ')
-                     //this.props.navigation.navigate("navig_EditProfil")
+                     this.props.navigation.navigate("navig_EditProfil")
+                     //   this.props.navigation.navigate("navig_test")
                   }}
 
                >
@@ -127,40 +145,39 @@ export default class Account extends Component {
             </View>
             <View style={{ top: 60, }}>
                <View style={{ top: 30, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>First Name    </Text>
-                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 40 }}>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 30 }}>First Name    </Text>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 33}}>
                      {firstName}
 
                   </Text>
                </View>
                <View style={{ top: 60, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Last Name    </Text>
-                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 40 }}>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 30 }}>Last Name    </Text>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 33 }}>
                      {lastName}
                   </Text>
                </View>
                <View style={{ top: 90, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Phone  </Text>
-                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 77 }}>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 30  }}>Phone  </Text>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 75 }}>
                      {phoneNumber}
                   </Text>
                </View>
                <View style={{ top: 120, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Birthday  </Text>
-                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 65 }}>January 1,
-                   {this.state.yearsNow}
-                     {/* {new Date().toLocaleString()} */}
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto',  marginLeft: 30  }}>Age </Text>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft:100 }}>
+                  { age}
                   </Text>
                </View>
                <View style={{ top: 150, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Gendre  </Text>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 30 }}>Gendre  </Text>
                   <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 71 }}>
                      {gendre}
                   </Text>
                </View>
                <View style={{ top: 180, flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 39 }}>Blood Type </Text>
-                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 50 }}>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 30 }}>Blood Type </Text>
+                  <Text style={{ fontSize: 17, color: "#3F3356", fontFamily: 'Roboto', marginLeft: 47 }}>
                      {blood_type}
                   </Text>
                </View>

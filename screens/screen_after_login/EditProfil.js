@@ -7,7 +7,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
 import DataBasecomponent from './../DataBase/DataBaseComponent';
 import { YellowBox } from 'react-native';
-
+import test2_Base from './test2_Base';
 YellowBox.ignoreWarnings(['Setting a timer']);
 
 export default class EditProfil extends Component {
@@ -37,6 +37,7 @@ export default class EditProfil extends Component {
       is_click_confirm: null,//lakherin bayenin hadi dertha hyt anbghy n afficher les erreurs façon dyanmique
       //mnin l user aydkhal ila mkontsh dayer hadi ay t aficha l messag leta7tf l code  atban mzn 
 
+
       _insert_data: null,//aala hesab l base donne
    }
 
@@ -44,9 +45,9 @@ export default class EditProfil extends Component {
    componentDidMount = async () => {
 
 
-      console.log(" ************************* ComponentWillUnmount --- EditProfil ****************** \n")
-      
-       console.log("componentDidMount of Account")
+      console.log(" *** ComponentUnmount --- EditProfil ***** \n")
+      console.log(this.state._insert_data)
+
       var user = firebase.auth().currentUser;
 
       if (user != null) {
@@ -60,7 +61,7 @@ export default class EditProfil extends Component {
       } else {
          console.log(" not user in Edit profil")
 
-        ///this.props.navigation.navigate("stack_log_in")
+         ///this.props.navigation.navigate("stack_log_in")
       }
 
 
@@ -78,7 +79,7 @@ export default class EditProfil extends Component {
          case 'first_name': {
 
             if (args[0] == '') {
-               this.setState({ first_name_error: "Please fill this field" })
+               this.setState({ first_name_error: null })
                // console.log(this.state.error_msg_confim_pwd);
             } else {
                if (!(new RegExp(/^[a-zA-Z ]+$/).test(args[0]))) {
@@ -93,7 +94,7 @@ export default class EditProfil extends Component {
 
          case 'last_name': {
             if (args[0] == '') {
-               this.setState({ last_name_error: "Please fill this field" })
+               this.setState({ last_name_error: null })
                // console.log(this.state.error_msg_confim_pwd);
             } else {
                if ((!new RegExp(/^[a-zA-Z ]+$/).test(args[0]))) {
@@ -108,7 +109,7 @@ export default class EditProfil extends Component {
 
          case 'age': {
             if (args[0] == '') {
-               this.setState({ error_msg_age: "Please fill this field" })
+               this.setState({ error_msg_age: null })
 
             } else {
                if (new RegExp(/^(([1]{1}[0-9]{0,2})|([1-9]{1}[0-9]{0,1}))$/).test(args[0])) {
@@ -130,7 +131,7 @@ export default class EditProfil extends Component {
                //si une seul verifier return true s-il depass 06-10..92 22 
 
             } else if (args[0] == '') {
-               this.setState({ error_msg_phone: 'Please fill this field' })
+               this.setState({ error_msg_phone: null })
 
             } else {
                this.setState({ error_msg_phone: "The phone number is badly formatted " })
@@ -144,59 +145,64 @@ export default class EditProfil extends Component {
 
    handl_confirm = async () => {
       //  this.props.navigation.navigate("stack_log_in")
-      let { age, first_name, last_name, phone_number
+      let { email, age, first_name, last_name, phone_number, selectedValue, checked
       } = this.state;
       this.setState({ is_click_confirm: true })
 
-      // this.props.navigation.navigate("navig_account") 
-
-
-      if (first_name == "") this.state.first_name_error = 'Please fill this field'
-      if (last_name == "") this.state.last_name_error = 'Please fill this field'
-      if (age == "") this.state.error_msg_age = 'Please fill this field'
-      if (phone_number == "") this.state.error_msg_phone = 'Please fill this field'
 
       if (
-         this.state.first_name_error == null && this.state.last_name_error == null
+         this.state.first_name_error == null &&
+         this.state.last_name_error == null
          && this.state.error_msg_age == null && this.state.error_msg_phone == null
       ) {
          this.setState({ loading: true })
-         console.log("correct Info ")
+         console.log("Valide form in Edit  ")
 
-         //kandir l mise a jour l insert_data hyt n9edar nmshy l handleSignUp o lcreation dyal l user 
-         //tkon failed o naawd ndkhal l hena donc aykhes nej3ha true bash n inseré new user 
-         this.state._insert_data = "true"
 
-         setTimeout(() => {   this.props.navigation.navigate("Home") }, 2000)
+         setTimeout(() => {
+            test2_Base.addUserEdit(email, first_name, last_name, phone_number
+               , age, checked, selectedValue)
+         }, 2000)
 
-      }else{
+         setTimeout(() => {
+            this.props.navigation.navigate("Home")
+         }, 5000)
+         /*   setTimeout(() => { 
+             
+        
+    }
+          , ) */
+
+      } else {
          this.state._insert_data = null
       }
 
    }
 
-
+   functionEcheck = () => {
+      console.log("attent ...")
+   }
 
    render() {
 
       const {
          // _delet_data,
          selectedValue, _insert_data, error_msg_age, checked, age, is_click_confirm, first_name_error, last_name_error,
-         first_name, last_name, phone_number,email
-     , error_msg_phone
+         first_name, last_name, phone_number, email
+         , error_msg_phone
       } = this.state;
 
       return (
          <View style={styles.container}>
             <Text style={styles.greeting}></Text>
-            {(this.state.email != "") ? (<DataBasecomponent
+            {/*  {(this.state.email != "") ? (<DataBasecomponent
                navigation={this.props.navigation} data={["get_dataEdit", email]} />) : (<Text>not executed</Text>
-               )}
+               )} */}
             {/* <Loader
                loading={this.state.loading} /> */}
             <ScrollView contentContainerStyle={styles.contentContainer}>
 
-     
+
 
                {/* // First Name */}
                <View style={{ marginTop: 10 }}>
@@ -275,7 +281,7 @@ export default class EditProfil extends Component {
                <View style={{
                   justifyContent: 'center',
                   alignItems: 'center',
-                   marginTop: 30, flexDirection: 'row'
+                  marginTop: 30, flexDirection: 'row'
                }}>
                   <Text style={{ marginRight: 25 }}>Gender</Text>
                   <RadioButton
@@ -309,9 +315,10 @@ export default class EditProfil extends Component {
                      selectedValue={this.state.selectedValue}
                      style={{
                         // alignItems: "22",
-                         height: 50, 
-                     marginRight: 93,
-                      width: 95 }}
+                        height: 50,
+                        marginRight: 93,
+                        width: 95
+                     }}
                      onValueChange={(itemValue) => { this.setState({ selectedValue: itemValue }) }}
                   >
                      <Picker.Item label="A+" value="A+" />
@@ -351,9 +358,10 @@ export default class EditProfil extends Component {
             {/* {si _insert_data deffranc de null kan ajouter f l base donn  dkshy kansyfto f data 
             li hya tableau o kandir f lawl dyaleha type wash l insert ola delet bash nlshy l component
             dyali n tchecki type bash naarf wash an inser ola an delet */}
-            {(_insert_data != null) ? (<DataBasecomponent
+
+            {/* {(_insert_data != null) ? (<DataBasecomponent
                data={["insert_dataEdit", email, "def", first_name, last_name, phone_number
-                  , age, checked, selectedValue]} />) : (null)}
+                  , age, checked, selectedValue]} />) : (<Text></Text>)}   */}
 
             {/* {si l user deja kan kan supprimih men l base donn o kan passi ghyr gmail o howa
              f  kay9alb aalih b gmail  o kaysprimih} */}

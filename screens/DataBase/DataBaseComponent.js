@@ -45,6 +45,7 @@ export default class DataBasecomponent extends Component {
     componentDidMount = async () => {
 
         console.log('Im into componentDidMount DataBase')
+       
         // console.log(typeof (this.props.data) + "mmmmm")
         // console.log(typeof (this.props.data) + " typeOf data")
         // if ("undefined" == typeof (this.props.data)) return;

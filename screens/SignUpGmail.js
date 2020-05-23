@@ -205,7 +205,7 @@ export default class SignUpGmail extends Component {
                      }} ></TextInput>
                </View>
                {first_name_error != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>
-                  {first_name_error}</Text>) : (null)}
+                  {first_name_error}</Text>) : (<Text style={styles.errorTextStyle}></Text>)}
 
 
                {/* // last name */}
@@ -223,7 +223,7 @@ export default class SignUpGmail extends Component {
                      value={last_name}
                   ></TextInput>
                </View>
-               {last_name_error != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{last_name_error}</Text>) : (null)}
+               {last_name_error != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{last_name_error}</Text>) : (<Text style={styles.errorTextStyle}></Text>)}
 
                {/* // phone number */}
                <View style={{ marginTop: 10 }}>
@@ -241,7 +241,7 @@ export default class SignUpGmail extends Component {
                      value={phone_number}
                   ></TextInput>
                </View>
-               {error_msg_phone != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{error_msg_phone}</Text>) : (null)}
+               {error_msg_phone != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{error_msg_phone}</Text>) : (<Text style={styles.errorTextStyle}></Text>)}
 
 
                {/* // age  */}
@@ -262,7 +262,7 @@ export default class SignUpGmail extends Component {
                   ></TextInput>
 
                </View>
-               {error_msg_age != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{error_msg_age}</Text>) : (null)}
+               {error_msg_age != null && is_click_confirm ? (<Text style={styles.errorTextStyle}>{error_msg_age}</Text>) : (<Text style={styles.errorTextStyle}></Text>)}
 
 
                {/* // RadioButton */}
@@ -270,7 +270,7 @@ export default class SignUpGmail extends Component {
                   justifyContent: 'center',
                   alignItems: 'center', marginTop: 30, flexDirection: 'row'
                }}>
-                  <Text style={{ marginRight: 40 }}>Gender</Text>
+                  <Text style={{left: 8, marginRight: 40 }}>Gender</Text>
                   <RadioButton
                      // style={{ backgroundColor: this.state.checked ? 'red' : 'white' }}
                      color="#6979F8"
@@ -293,10 +293,10 @@ export default class SignUpGmail extends Component {
 
                {/* Picker */}
                <View style={{
-                  justifyContent: 'center',
+                    justifyContent: 'center',
                   alignItems: 'center', marginTop: 30, flexDirection: 'row'
                }}>
-                  <Text style={{ marginRight: 17 }}>Blood Type</Text>
+                  <Text style={{ marginRight: 17, left: 12 }}>Blood Type</Text>
 
                   <Picker
                      selectedValue={this.state.selectedValue}
@@ -356,7 +356,7 @@ export default class SignUpGmail extends Component {
 const styles = StyleSheet.create({
 
    container: {
-      alignItems:'center',
+      alignItems: "center",
       flex: 1,
       backgroundColor: 'white'
    },
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
 
    etoilText: {
       top: 34,
-      left: 309
+      left: 270
    },
 
    greeting: {
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
 
    errorTextStyle: {
       color: "#E9446A",
-      left: 37,
+      left: 12,
       marginTop: -10
    },
 
@@ -431,8 +431,8 @@ const styles = StyleSheet.create({
       marginVertical: 10,
       borderBottomWidth: 1,
       borderBottomColor: '#CFCFCF',
-
-      left: 25,
+      alignItems: "center",
+      // left: 25,
    },
 
    inputErrorStyle: {
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1,
       borderBottomColor: 'red',
 
-      left: 25,
+      alignItems: "center",
    },
 
    inputAge: {
@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1,
       borderBottomColor: '#CFCFCF',
 
-      left: 25,
+      alignItems: "center",
    },
 
    inputAgeError: {
@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1,
       borderBottomColor: 'red',
 
-      left: 25,
+      alignItems: "center",
    },
 
    buttom: {
@@ -487,5 +487,4 @@ const styles = StyleSheet.create({
    },
 
 });
-
 

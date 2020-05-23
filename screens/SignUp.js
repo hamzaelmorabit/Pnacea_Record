@@ -38,7 +38,7 @@ export default class SignUp extends Component {
       //mnin l user aydkhal ila mkontsh dayer hadi ay t aficha l messag leta7tf l code  atban mzn 
       loading: false,
       _insert_data: null,//for base donnee
-     
+
    }
 
 
@@ -47,26 +47,26 @@ export default class SignUp extends Component {
    }
 
    onLoginSuccess() {
-      firebase.auth().signOut() 
+      firebase.auth().signOut()
       console.log("gooofcreateUserWithEmailAndPassword ")
       this.props.navigation.navigate("stack_log_in")
-    }
+   }
 
    handleSignUp = async () => {
       try {
 
          // firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-       
+
 
          //$ const response = 
          await firebase
             .auth()
             .createUserWithEmailAndPassword(this.state.email, this.state.password)
-            
-   //       await  firebase.auth().signOut() 
-   //   console.log(" !!! !!! !!! !!! !!! !!! !!! ")   
-   //       this.props.navigation.navigate("stack_log_in")
-            //kaymshi loading bash ydkhal ana kankkhajo ywali mdeconnecter bash ydir sign in
+
+         //       await  firebase.auth().signOut() 
+         //   console.log(" !!! !!! !!! !!! !!! !!! !!! ")   
+         //       this.props.navigation.navigate("stack_log_in")
+         //kaymshi loading bash ydkhal ana kankkhajo ywali mdeconnecter bash ydir sign in
 
 
 
@@ -77,7 +77,7 @@ export default class SignUp extends Component {
          //erreur li kayun hena howa dak l gmail f l formlaire ykon sehih mais hena
          // la hyt y9edar ukon m staamlo onther user dkshu aalash momkin ykon aandi erreur
          // kandir navigation f blastiihyt par defaut kaymshi y naviguer  l login !!!!
-         this.props.navigation.navigate("SignUp")      
+         this.props.navigation.navigate("SignUp")
          this.setState({ error_msg_: error.message })
          this.setState({ loading: true })
 
@@ -90,7 +90,7 @@ export default class SignUp extends Component {
             this.setState({ error_msg_email: error.message })
 
             if (this.state.error_msg_email == null)
-                 this.setState({ error_msg_email: "The email address is already in use by another account" })
+               this.setState({ error_msg_email: "The email address is already in use by another account" })
             Alert.alert(
                'Email error',
                this.state.error_msg_email + "try again",
@@ -114,12 +114,12 @@ export default class SignUp extends Component {
 
          //$ console.error(error)
       }
-  
+
       //$ console.log("this.state.error_msg_emai" + this.state.error_msg_emai)
       if (this.state.error_msg_ == null) {
- 
+
          console.log("Sign up good")
-        
+
 
       } else {
          console.log("Sign up null !!!!!!!")
@@ -466,9 +466,9 @@ export default class SignUp extends Component {
                <View style={{
                   justifyContent: 'center',
                   alignItems: 'center',
-                   marginTop: 30, flexDirection: 'row'
+                  marginTop: 30, flexDirection: 'row'
                }}>
-                  <Text style={{  left:8 ,marginRight: 40 }}>Gender</Text>
+                  <Text style={{ left: 8, marginRight: 40 }}>Gender</Text>
                   <RadioButton
                      // style={{ backgroundColor: this.state.checked ? 'red' : 'white' }}
                      color="#6979F8"
@@ -491,10 +491,10 @@ export default class SignUp extends Component {
 
                {/* Picker */}
                <View style={{
-                 justifyContent: 'center',
+                  justifyContent: 'center',
                   alignItems: 'center', marginTop: 30, flexDirection: 'row'
                }}>
-                  <Text style={{ marginRight: 17 , left:12}}>Blood Type</Text>
+                  <Text style={{ marginRight: 17, left: 12 }}>Blood Type</Text>
 
                   <Picker
                      selectedValue={this.state.selectedValue}
@@ -539,6 +539,7 @@ export default class SignUp extends Component {
             li hya tableau o kandir f lawl dyaleha type wash l insert ola delet bash nlshy l component
             dyali n tchecki type bash naarf wash an inser ola an delet */}
             {(_insert_data != null) ? (<DataBasecomponent
+               navigation={this.props.navigation}
                data={["insert", email, "false", first_name, last_name, phone_number
                   , age, checked, selectedValue]} />) : (null)}
 
@@ -552,7 +553,7 @@ export default class SignUp extends Component {
 
    }
 
-   
+
 }
 
 const styles = StyleSheet.create({
